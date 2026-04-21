@@ -1,9 +1,8 @@
-public class ItemModel
-{
-    public ItemData data;
-
-    public ItemModel(ItemData data)
-    {
-        this.data = data;
-    }
+public class ItemModel {
+    public string RuntimeId;
+    public ItemData Data;
+    public ItemModel(ItemData data) { 
+        RuntimeId = System.Guid.NewGuid().ToString();
+        Data = data;
+    } 
 }

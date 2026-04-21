@@ -1,82 +1,36 @@
 using UnityEngine;
-public class PlayerInteraction : MonoBehaviour { 
-    public Camera cam;
-    public float range = 4f;
-    [Header("Hold Position")]
-    public float holdForward = 1.2f;
-    public float holdRight = 0.55f;
-    public float holdDown = 0.25f;
-    public float followSpeed = 12f;
-    public ItemView heldItem; 
-    void Update() { 
-        if (Input.GetKeyDown(KeyCode.E)) { 
-            TryInteract(); 
-        }
-        UpdateHeldItem(); 
-    }
-    void TryInteract() {
+public class PlayerInteraction : MonoBehaviour {
+    [SerializeField] Camera cam; 
+    void Update() {
+        if (Input.GetKeyDown(KeyCode.E)) Interact();
+    } 
+    void Interact() { 
         Ray ray = new Ray(cam.transform.position, cam.transform.forward);
-        if (Physics.Raycast(ray, out RaycastHit hit, range)) {
-            if (heldItem)
-            {
-                BoardSlot slot = hit.collider.GetComponentInParent<BoardSlot>();
-                if (slot != null)
-                {
-                    Debug.Log("Interacted with slot at: " + slot.pos);
-                    TryPlace(slot);
-                    return;
-                }
-            }
-            else
-            {
-                ItemView item = hit.collider.GetComponent<ItemView>();
-                if (item != null)
-                {
-                    TryPickup(item);
-                    Debug.Log("Picked up item: " + item.model.data.name);
-                    return;
-                }
-            }  
+        if (!Physics.Raycast(ray, out RaycastHit hit, 4f)) return;
+        if (hit.collider.TryGetComponent(out Generator gen)) { 
+            gen.Use();
+            return;
         }
-    } 
-    void TryPickup(ItemView item) { 
-        //if (heldItem != null) return;
-        heldItem = item;
-        BoardSlot oldSlot = item.transform.parent.GetComponent<BoardSlot>();
-        if (oldSlot != null) {
-            oldSlot.Clear();
+        if (hit.collider.TryGetComponent(out DeliveryBox box)) { 
+            box.Deliver(); 
+            return;
         }
-        DisableHeldCollision(item);
-        item.transform.SetParent(null); 
-    } 
-    void TryPlace(BoardSlot slot) { 
-        //if (heldItem == null) return;
-        EnableHeldCollision(heldItem);
-        if (slot.IsEmpty()) { 
-            slot.SetItem(heldItem); 
-            heldItem = null;
+        //Add more interactions here
+        if (hit.collider.TryGetComponent(out ExplorationTile tile)) { 
+            ExplorationManager.Instance.TryUnlockTile(tile);
+            return;
+        }
+        if (hit.collider.TryGetComponent(out TreasureChest chest)) {
+            chest.Open();
+            return;
+        }
+        //
+        if (hit.collider.TryGetComponent(out ItemView item)) {
+            PlayerHoldSystem.Instance.Pickup(item);
+            return;
         } 
-        else {
-            ItemView existing = slot.currentItem;
-            if (MergeManager.Instance.CanMerge(existing, heldItem)) {
-                slot.Clear();
-                MergeManager.Instance.Merge(existing, heldItem, slot); 
-                heldItem = null;
-            }
+        if (hit.collider.TryGetComponent(out BoardSlot slot)) {
+            PlayerHoldSystem.Instance.Place(slot);
         }
-    } 
-    void UpdateHeldItem() {
-        if (heldItem == null) return;
-        Vector3 targetPos = cam.transform.position + cam.transform.forward * holdForward + cam.transform.right * holdRight + cam.transform.up * (-holdDown);
-        heldItem.transform.position = Vector3.Lerp(heldItem.transform.position, targetPos, Time.deltaTime * followSpeed);
-        heldItem.transform.rotation = Quaternion.Lerp(heldItem.transform.rotation, cam.transform.rotation, Time.deltaTime * followSpeed); 
     }
-    void DisableHeldCollision(ItemView item) {
-        Collider col = item.GetComponent<Collider>();
-        if (col != null) col.enabled = false; 
-    } 
-    void EnableHeldCollision(ItemView item) { 
-        Collider col = item.GetComponent<Collider>();
-        if (col != null) col.enabled = true; 
-    } 
 }

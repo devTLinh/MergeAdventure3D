@@ -1,29 +1,17 @@
 using UnityEngine;
-
-public class MergeManager : MonoBehaviour
-{
-    public static MergeManager Instance;
-
-    public ItemDatabase database;
-
-    void Awake()
-    {
+public class MergeManager : MonoBehaviour {
+    public static MergeManager Instance; 
+    void Awake() {
         Instance = this;
-    }
-
-    public bool CanMerge(ItemView a, ItemView b) { 
-        if (a == null || b == null) return false;
-        return a.model.data.mergeGroup == b.model.data.mergeGroup && a.model.data.level == b.model.data.level; }
-    public ItemView Merge(ItemView a, ItemView b, BoardSlot slot) { 
-        ItemData current = a.model.data;
-        ItemData next = ItemDatabase.Instance.Get(current.mergeGroup, current.level + 1);
-        if (next == null) return null;
-        Destroy(a.gameObject); 
+    } 
+    public void TryMerge(ItemView a, ItemView b) {
+        if (a.Model.Data.mergeGroup != b.Model.Data.mergeGroup) return;
+        if (a.Model.Data.level != b.Model.Data.level) return; 
+        BoardSlot slot = b.CurrentSlot; 
+        b.CurrentSlot.Clear();
+        ItemData next = ItemDatabase.Instance.Get(a.Model.Data.mergeGroup, a.Model.Data.level + 1);
+        Destroy(a.gameObject);
         Destroy(b.gameObject);
-        GameObject go = Instantiate(next.prefab);
-        ItemView newView = go.GetComponent<ItemView>(); 
-        newView.Init(new ItemModel(next));
-        slot.SetItem(newView);
-        return newView; 
+        ItemFactory.Instance.SpawnToSlot(slot, next);
     }
 }

@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4801dd27dc9bcb47b76bf31e24df034, type: 3}
   m_Name: Wood_L1
   m_EditorClassIdentifier: 
-  id: Wood_L1
+  itemId: twig_01
+  itemName: Twig
   mergeGroup: Wood
   level: 1
   prefab: {fileID: 5854736488884593167, guid: d3e61977b8e2eb244ad8dd0127c7c3de, type: 3}

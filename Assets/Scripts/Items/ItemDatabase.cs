@@ -7,7 +7,8 @@ public class ItemDatabase : MonoBehaviour
     public List<ItemData> allItems = new List<ItemData>();
     private Dictionary<string, Dictionary<int, ItemData>> lookup = new Dictionary<string, Dictionary<int, ItemData>>(); 
     void Awake() { 
-        Instance = this; BuildDatabase();
+        Instance = this;
+        BuildDatabase();
     }
     void BuildDatabase() {
         lookup.Clear(); 

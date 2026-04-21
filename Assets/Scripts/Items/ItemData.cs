@@ -1,9 +1,8 @@
 using UnityEngine;
-
-[CreateAssetMenu(menuName = "Game/Item")]
-public class ItemData : ScriptableObject
-{
-    public string id;
+[CreateAssetMenu(menuName = "Merge Frontier/Item")]
+public class ItemData : ScriptableObject {
+    public string itemId;
+    public string itemName;
     public string mergeGroup;
     public int level;
     public GameObject prefab;
