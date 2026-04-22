@@ -16,8 +16,8 @@ public class PlayerInteraction : MonoBehaviour {
             return;
         }
         //Add more interactions here
-        if (hit.collider.TryGetComponent(out ExplorationTile tile)) { 
-            ExplorationManager.Instance.TryUnlockTile(tile);
+        if (hit.collider.TryGetComponent(out ExplorationNode node)) { 
+            ExplorationNodeManager.Instance.TryUnlock(node); 
             return;
         }
         if (hit.collider.TryGetComponent(out TreasureChest chest)) {

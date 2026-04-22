@@ -1,24 +1,21 @@
 using UnityEngine;
-public class TreasureChest : MonoBehaviour { 
-    public void Open() { 
+public class TreasureChest : MonoBehaviour {
+    public void Open() {
         int roll = Random.Range(0, 100);
         if (roll < 40) {
             EnergyManager.Instance.Add(5); 
-            NotificationUI.Instance.Show("Treasure: +5 Energy");
+            NotificationUI.Instance.Show("Chest +5 Energy");
         } 
-        else if (roll < 65) { 
+        else if (roll < 70) {
             ExplorationEnergyManager.Instance.Add(4);
-            NotificationUI.Instance.Show("Treasure: +4 Explore Energy");
+            NotificationUI.Instance.Show("Chest +4 Explore");
         } 
-        else if (roll < 85) {
-            NotificationUI.Instance.Show("Treasure: Utility Item");
-        }
-        else if (roll < 95) {
-            NotificationUI.Instance.Show("Treasure: Rare Item");
+        else if (roll < 90) { 
+            NotificationUI.Instance.Show("Utility Item"); 
         } 
-        else { 
-            NotificationUI.Instance.Show("Treasure: Artifact!");
+        else {
+            NotificationUI.Instance.Show("Rare Item");
         }
         Destroy(gameObject);
-    } 
+    }
 }
