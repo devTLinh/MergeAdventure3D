@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4801dd27dc9bcb47b76bf31e24df034, type: 3}
+  m_Name: Fruit_L8
+  m_EditorClassIdentifier: 
+  itemId: Fruit_L8
+  itemName: Pear
+  mergeGroup: Fruit
+  level: 8
+  prefab: {fileID: 3993196853935147428, guid: ba93ae1410e341d41be192f9d77df500, type: 3}

@@ -18,7 +18,7 @@ MonoBehaviour:
   maxCharges: 99
   cooldown: 1
   drops:
-  - item: {fileID: 11400000, guid: ff9a9923f9b82ea47b12c647b3ae7872, type: 2}
+  - item: {fileID: 11400000, guid: 7cdfda7a49d64544592c4233f166ed30, type: 2}
     weight: 1
-  - item: {fileID: 11400000, guid: e637dea6851a0af45a52415d299e62ac, type: 2}
+  - item: {fileID: 11400000, guid: c777c7e51f96a3f42b527289d609ed56, type: 2}
     weight: 2

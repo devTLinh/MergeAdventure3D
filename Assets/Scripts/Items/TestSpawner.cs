@@ -7,7 +7,8 @@ public class TestSpawner : MonoBehaviour {
         Spawn(slotB);
     } 
     void Spawn(BoardSlot slot) {
-        ItemData data = ItemDatabase.Instance.Get("Wood", 1);
+        ItemData data = ItemDatabase.Instance.Get("Tool", 4);
+        Debug.Log($"Spawning {data.itemName} in {slot.name}");
         GameObject go = Instantiate(data.prefab);
         ItemView view = go.GetComponent<ItemView>();
         view.Init(new ItemModel(data));
