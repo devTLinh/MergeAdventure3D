@@ -6,7 +6,9 @@ public class OrderManager : MonoBehaviour {
     [SerializeField] private List<OrderData> orderPool = new List<OrderData>();
     [Header("Settings")]
     [SerializeField] private int maxActiveOrders = 3;
-    public List<RuntimeOrder> ActiveOrders = new List<RuntimeOrder>(); 
+    public List<RuntimeOrder> ActiveOrders = new List<RuntimeOrder>();
+    private int completedOrders = 0;
+    private int totalOrders = 25;
     private void Awake() { 
         Instance = this;
     } 
@@ -15,9 +17,14 @@ public class OrderManager : MonoBehaviour {
     } 
     public void FillOrders() {
         while (ActiveOrders.Count < maxActiveOrders) { 
-            OrderData data = orderPool[Random.Range(0, orderPool.Count)];
+            OrderData data = orderPool[Random.Range(0, totalOrders)];
             ActiveOrders.Add(new RuntimeOrder(data));
         }
+    }
+    private void UpdateTotalOders()
+    {
+        if (completedOrders <= totalOrders) return;
+        totalOrders = Mathf.Min(totalOrders + 25, 100);
     }
     public bool TryDeliver(ItemView item) { 
         if (item == null) return false;
@@ -41,6 +48,7 @@ public class OrderManager : MonoBehaviour {
         EnergyManager.Instance.Add(order.source.rewardEnergy);
         NotificationUI.Instance.Show("Order Complete! +" + order.source.rewardEnergy + " Energy");
         ActiveOrders.Remove(order);
+        UpdateTotalOders();
         FillOrders();
         EnergyManager.Instance.Add(order.source.rewardEnergy);
         ExplorationEnergyManager.Instance.Add(2);

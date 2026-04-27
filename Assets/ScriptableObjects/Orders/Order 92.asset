@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1943f316b1b03ca4788e7a4e0af2461c, type: 3}
+  m_Name: Order 92
+  m_EditorClassIdentifier: 
+  orderId: Order_92
+  customerName: Jame
+  requirements:
+  - item: {fileID: 11400000, guid: 0d4f0984d04556b48be716f33a9d51bd, type: 2}
+    amount: 1
+  - item: {fileID: 11400000, guid: 3a5da152f8ebc404c9183192cce4a432, type: 2}
+    amount: 1
+  - item: {fileID: 11400000, guid: f9e0aa3872d4cad46a1edb894ee30ec0, type: 2}
+    amount: 1
+  rewardEnergy: 9
+  rewardCoin: 0

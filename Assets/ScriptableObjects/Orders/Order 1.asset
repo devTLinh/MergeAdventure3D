@@ -15,7 +15,7 @@ MonoBehaviour:
   orderId: Order_1
   customerName: Jame
   requirements:
-  - item: {fileID: 11400000, guid: 2a62798886199f744adc1078c6186a06, type: 2}
-    amount: 2
-  rewardEnergy: 5
+  - item: {fileID: 11400000, guid: 21079fe7180c23e4fa6f91b1a4d3a01a, type: 2}
+    amount: 1
+  rewardEnergy: 2
   rewardCoin: 0
