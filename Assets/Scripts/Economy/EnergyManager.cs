@@ -2,6 +2,7 @@ using UnityEngine;
 public class EnergyManager : MonoBehaviour { 
     public static EnergyManager Instance; 
     public int CurrentEnergy = 20; 
+    public int MaxEnergy = 100;
     void Awake() {
         Instance = this;
     } 

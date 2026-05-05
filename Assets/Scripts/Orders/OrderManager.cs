@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 public class OrderManager : MonoBehaviour { 
     public static OrderManager Instance;
     [Header("Database")]
@@ -7,8 +8,7 @@ public class OrderManager : MonoBehaviour {
     [Header("Settings")]
     [SerializeField] private int maxActiveOrders = 3;
     public List<RuntimeOrder> ActiveOrders = new List<RuntimeOrder>();
-    private int completedOrders = 0;
-    private int totalOrders = 25;
+    private int nextOrderIndex = 0;
     private void Awake() { 
         Instance = this;
     } 
@@ -17,14 +17,10 @@ public class OrderManager : MonoBehaviour {
     } 
     public void FillOrders() {
         while (ActiveOrders.Count < maxActiveOrders) { 
-            OrderData data = orderPool[Random.Range(0, totalOrders)];
+            OrderData data = orderPool[nextOrderIndex];
             ActiveOrders.Add(new RuntimeOrder(data));
+            nextOrderIndex = (nextOrderIndex + 1) % orderPool.Count;
         }
-    }
-    private void UpdateTotalOders()
-    {
-        if (completedOrders <= totalOrders) return;
-        totalOrders = Mathf.Min(totalOrders + 25, 100);
     }
     public bool TryDeliver(ItemView item) { 
         if (item == null) return false;
@@ -48,7 +44,6 @@ public class OrderManager : MonoBehaviour {
         EnergyManager.Instance.Add(order.source.rewardEnergy);
         NotificationUI.Instance.Show("Order Complete! +" + order.source.rewardEnergy + " Energy");
         ActiveOrders.Remove(order);
-        UpdateTotalOders();
         FillOrders();
         EnergyManager.Instance.Add(order.source.rewardEnergy);
         ExplorationEnergyManager.Instance.Add(2);

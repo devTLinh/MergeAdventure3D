@@ -1,21 +1,23 @@
 using UnityEngine;
 public class ExplorationEnergyManager : MonoBehaviour {
     public static ExplorationEnergyManager Instance;
-    [SerializeField] private int startEnergy = 10;
-    public int Current { get; private set; }
+
+    public int MaxEnergy = 40;
+
+    public int CurrentEnergy = 20;
     private void Awake() { 
         Instance = this;
-        Current = startEnergy;
+        //CurrentEnergy = MaxEnergy;
     }
     public bool HasEnough(int amount) {
-        return Current >= amount;
+        return CurrentEnergy >= amount;
     } 
     public bool Spend(int amount) {
         if (!HasEnough(amount)) return false;
-        Current -= amount;
+        CurrentEnergy -= amount;
         return true;
     }
     public void Add(int amount) {
-        Current += amount; 
+        CurrentEnergy += amount; 
     } 
 }

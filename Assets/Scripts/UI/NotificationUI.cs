@@ -4,7 +4,8 @@ using System.Collections;
 public class NotificationUI : MonoBehaviour {
     public static NotificationUI Instance;
     [SerializeField] private Text textUI;
-    Coroutine routine; 
+    Coroutine routine;
+    public CanvasGroup canvasGroup;
     private void Awake() { 
         Instance = this;
     }
@@ -15,7 +16,11 @@ public class NotificationUI : MonoBehaviour {
     IEnumerator ShowRoutine(string msg) {
         textUI.text = msg;
         textUI.enabled = true; 
+        canvasGroup.alpha = 1f;
+        canvasGroup.blocksRaycasts = true;
         yield return new WaitForSeconds(2f);
+        canvasGroup.alpha = 0;
+        canvasGroup.blocksRaycasts = false;
         textUI.enabled = false;
     }
 }

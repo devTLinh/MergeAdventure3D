@@ -2,7 +2,7 @@ using UnityEngine;
 public class PlayerInteraction : MonoBehaviour {
     [SerializeField] Camera cam; 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.E)) Interact();
+        if (Input.GetMouseButtonDown(0)) Interact();
     } 
     void Interact() { 
         Ray ray = new Ray(cam.transform.position, cam.transform.forward);
