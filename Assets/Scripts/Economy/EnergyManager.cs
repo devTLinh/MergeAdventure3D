@@ -16,5 +16,9 @@ public class EnergyManager : MonoBehaviour {
     } 
     public void Add(int amount) { 
         CurrentEnergy += amount;
-    } 
+    }
+    public void Set(int value)
+    {
+        CurrentEnergy = value;
+    }
 }

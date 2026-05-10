@@ -10,5 +10,14 @@ public class BoardManager : MonoBehaviour {
             if (slot.IsEmpty()) return slot; 
         }
         return null;
-    } 
+    }
+    public void ClearBoard()
+    {
+        foreach (BoardSlot slot in slots)
+        {
+            if (slot.currentItem == null) continue;
+            Destroy(slot.currentItem.gameObject);
+            slot.Clear();
+        }
+    }
 }
