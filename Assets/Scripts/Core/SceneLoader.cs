@@ -6,33 +6,55 @@ public class SceneLoader : MonoBehaviour
 {
     public static SceneLoader Instance;
 
-    string currentRegion;
+    [SerializeField]
+    Transform player;
 
     void Awake()
     {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
     }
 
-    public void LoadRegion(string sceneName)
+    public void LoadSceneByName(
+        string sceneName)
     {
         StartCoroutine(
             LoadRoutine(sceneName));
     }
 
-    IEnumerator LoadRoutine(string sceneName)
+    IEnumerator LoadRoutine(
+        string sceneName)
     {
-        if (!string.IsNullOrEmpty(currentRegion))
-        {
-            yield return SceneManager
-                .UnloadSceneAsync(
-                    currentRegion);
-        }
-
         yield return SceneManager
-            .LoadSceneAsync(
-                sceneName,
-                LoadSceneMode.Additive);
+            .LoadSceneAsync(sceneName);
 
-        currentRegion = sceneName;
+        yield return null;
+
+        MapSpawn spawn =
+            FindObjectOfType<MapSpawn>();
+
+        if (spawn != null)
+        {
+            player.position =
+                spawn.transform.position;
+        }
+    }
+    public void ReturnBoard() {
+        StartCoroutine(ReturnBoardRoutine());
+    }
+
+    IEnumerator ReturnBoardRoutine() {
+        yield return SceneManager.LoadSceneAsync("CoreGame");
+        yield return null;
+
+        MapSpawn spawn = FindObjectOfType<MapSpawn>();
+        if (spawn != null) {
+            player.position = spawn.transform.position;
+        }
     }
 }

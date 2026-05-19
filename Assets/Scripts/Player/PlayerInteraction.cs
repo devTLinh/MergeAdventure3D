@@ -3,6 +3,8 @@ public class PlayerInteraction : MonoBehaviour {
     [SerializeField] Camera cam; 
     void Update() {
         if (Input.GetMouseButtonDown(0)) Interact();
+        if (Input.GetMouseButtonDown(1)) SceneLoader.Instance.LoadSceneByName("ForestCamp");
+        if(Input.GetKeyDown(KeyCode.Space)) SceneLoader.Instance.ReturnBoard();
     } 
     void Interact() { 
         Ray ray = new Ray(cam.transform.position, cam.transform.forward);
@@ -16,8 +18,8 @@ public class PlayerInteraction : MonoBehaviour {
             return;
         }
         //Add more interactions here
-        if (hit.collider.TryGetComponent(out ExplorationNode node)) { 
-            ExplorationNodeManager.Instance.TryUnlock(node); 
+        if (hit.collider.TryGetComponent(out NodeMarker marker)) { 
+            marker.Interact(); 
             return;
         }
         if (hit.collider.TryGetComponent(out TreasureChest chest)) {

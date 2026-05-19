@@ -6,14 +6,9 @@ public class BootstrapLoader : MonoBehaviour
 {
     IEnumerator Start()
     {
-        yield return SceneManager.LoadSceneAsync(
-            "CoreGame",
-            LoadSceneMode.Additive);
+        yield return SceneManager .LoadSceneAsync("CoreGame",LoadSceneMode.Additive);
+        Scene scene = SceneManager.GetSceneByName("CoreGame");
 
-        Scene core =
-            SceneManager.GetSceneByName(
-                "CoreGame");
-
-        SceneManager.SetActiveScene(core);
+        SceneManager.SetActiveScene(scene);
     }
 }

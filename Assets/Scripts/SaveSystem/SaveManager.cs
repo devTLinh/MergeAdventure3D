@@ -15,12 +15,10 @@ public class SaveManager : MonoBehaviour
             Application.persistentDataPath
             + "/save.json";
     }
-
-    private void Start()
+    public void InitializeGame()
     {
         LoadGame();
     }
-
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F5))
@@ -54,6 +52,7 @@ public class SaveManager : MonoBehaviour
         }
         string json = File.ReadAllText(savePath);
         GameSaveData data = JsonUtility.FromJson<GameSaveData>(json);
+        Debug.Log("Link:" + savePath);
         LoadPlayer(data);
         LoadBoard(data);
         //LoadNodes(data);
