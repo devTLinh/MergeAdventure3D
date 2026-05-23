@@ -6,6 +6,9 @@ public class ExplorationEnergyManager : MonoBehaviour
     public int MaxEnergy = 40;
 
     public int CurrentEnergy = 20;
+    [Header("Regen")]
+    public int regenAmount = 1;
+    public int regenMinutes = 5;
     private void Awake()
     {
         Instance = this;
@@ -23,7 +26,7 @@ public class ExplorationEnergyManager : MonoBehaviour
     }
     public void Add(int amount)
     {
-        CurrentEnergy += amount;
+        CurrentEnergy = Mathf.Clamp( CurrentEnergy + amount, 0 , MaxEnergy);
     }
     public void Set(int value)
     {

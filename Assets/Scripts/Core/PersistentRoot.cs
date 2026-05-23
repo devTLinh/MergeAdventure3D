@@ -16,4 +16,16 @@ public class PersistentRoot : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
     }
+    void OnApplicationQuit()
+    {
+        SaveManager.Instance.SaveGame();
+    }
+
+    void OnApplicationPause( bool pause)
+    {
+        if (pause)
+        {
+            SaveManager.Instance.SaveGame();
+        }
+    }
 }

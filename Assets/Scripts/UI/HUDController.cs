@@ -8,7 +8,7 @@ public class HUDController : MonoBehaviour {
         energySlider = GetComponent<Slider>();
     }
     void Update() {
-        energyText.text = EnergyManager.Instance.CurrentEnergy.ToString();
-        energySlider.value = EnergyManager.Instance.CurrentEnergy > EnergyManager.Instance.MaxEnergy ? 1 : (float)EnergyManager.Instance.CurrentEnergy / EnergyManager.Instance.MaxEnergy;
+        energyText.text = EnergyManager.Instance.current.ToString();
+        energySlider.value = EnergyManager.Instance.current > EnergyManager.Instance.max ? 1 : (float)EnergyManager.Instance.current / EnergyManager.Instance.max;
     }
 }

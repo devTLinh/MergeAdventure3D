@@ -15,7 +15,7 @@ public class BoardSlot : MonoBehaviour
         currentItem = item;
         item.CurrentSlot = this;
         item.transform.SetParent(transform);
-        item.transform.position = transform.position + Vector3.up * 1f;
+        item.transform.position = transform.position + Vector3.up * .5f;
         item.transform.localRotation = Quaternion.identity;
     }
 

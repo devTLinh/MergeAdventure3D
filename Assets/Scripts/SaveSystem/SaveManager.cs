@@ -1,5 +1,5 @@
-using UnityEngine;
 using System.IO;
+using UnityEngine;
 
 public class SaveManager : MonoBehaviour
 {
@@ -55,13 +55,16 @@ public class SaveManager : MonoBehaviour
         Debug.Log("Link:" + savePath);
         LoadPlayer(data);
         LoadBoard(data);
+        EnergyRegenManager.Instance.ApplyOfflineRegen(data);
         //LoadNodes(data);
         Debug.Log("GAME LOADED");
     }
     void SavePlayer(GameSaveData data)
     {
-        data.energy = EnergyManager.Instance.CurrentEnergy;
+        data.energy = EnergyManager.Instance.current;
         data.exploreEnergy = ExplorationEnergyManager.Instance.CurrentEnergy;
+        data.energyTimestamp = System.DateTime.UtcNow.ToString("o");
+        data.exploreTimestamp = System.DateTime.UtcNow.ToString("o");
     }
     void LoadPlayer(GameSaveData data)
     {

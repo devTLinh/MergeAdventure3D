@@ -1,24 +1,27 @@
 using UnityEngine;
 public class EnergyManager : MonoBehaviour { 
     public static EnergyManager Instance; 
-    public int CurrentEnergy = 20; 
-    public int MaxEnergy = 100;
+    public int current = 20; 
+    public int max = 100;
+    [Header("Regen")]
+    public int regenAmount = 1;
+    public int regenMinutes = 2;
     void Awake() {
         Instance = this;
     } 
     public bool HasEnough(int amount) { 
-        return CurrentEnergy >= amount;
+        return current >= amount;
     } 
     public bool Spend(int amount) {
         if (!HasEnough(amount)) return false;
-        CurrentEnergy -= amount;
+        current -= amount;
         return true;
     } 
-    public void Add(int amount) { 
-        CurrentEnergy += amount;
+    public void Add(int amount) {
+        current = Mathf.Clamp(current + amount, 0 , max);
     }
     public void Set(int value)
     {
-        CurrentEnergy = value;
+        current = value;
     }
 }
