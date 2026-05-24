@@ -1,14 +1,22 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using System.Collections;
 
-public class BootstrapLoader : MonoBehaviour
-{
-    IEnumerator Start()
+public class BootstrapLoader : MonoBehaviour{
+    void Start()
     {
-        yield return SceneManager .LoadSceneAsync("CoreGame",LoadSceneMode.Additive);
-        Scene scene = SceneManager.GetSceneByName("CoreGame");
-
-        SceneManager.SetActiveScene(scene);
+        Initialize();
+    }
+    void Initialize()
+    {
+        CheckLogin();
+    }
+    void CheckLogin()
+    {
+        if (FirebaseManager.Instance.IsLoggedIn()){
+            MainUIManager.Instance.ShowMenu();
+        }
+        else
+        {
+            MainUIManager.Instance.ShowLogin();
+        }
     }
 }
