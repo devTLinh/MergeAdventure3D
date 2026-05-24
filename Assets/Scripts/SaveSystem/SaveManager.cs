@@ -6,6 +6,7 @@ public class SaveManager : MonoBehaviour
     public static SaveManager Instance;
 
     string savePath;
+    bool initialized;
 
     private void Awake()
     {
@@ -15,8 +16,14 @@ public class SaveManager : MonoBehaviour
             Application.persistentDataPath
             + "/save.json";
     }
+    private void Start()
+    {
+        InitializeGame();
+    }
     public void InitializeGame()
     {
+        if (initialized) return;
+        initialized = true;
         LoadGame();
     }
     private void Update()

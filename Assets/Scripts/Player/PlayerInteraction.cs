@@ -3,8 +3,8 @@ public class PlayerInteraction : MonoBehaviour {
     [SerializeField] Camera cam; 
     void Update() {
         if (Input.GetMouseButtonDown(0)) Interact();
-        if (Input.GetMouseButtonDown(1)) SceneLoader.Instance.LoadSceneByName("ForestCamp");
-        if(Input.GetKeyDown(KeyCode.Space)) SceneLoader.Instance.ReturnBoard();
+        if (Input.GetMouseButtonDown(1)) SceneLoader.Instance.LoadMap("ForestCamp");
+        if(Input.GetKeyDown(KeyCode.Space)) SceneLoader.Instance.ReturnToCore();
     } 
     void Interact() { 
         Ray ray = new Ray(cam.transform.position, cam.transform.forward);
