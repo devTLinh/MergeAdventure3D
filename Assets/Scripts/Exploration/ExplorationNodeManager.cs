@@ -15,7 +15,7 @@ public class ExplorationNodeManager : MonoBehaviour {
             return;
         }
         node.Unlock();
-        RewardResolver.Resolve(node);
         NotificationUI.Instance.Show("Unlocked Area");
+
     } 
 }

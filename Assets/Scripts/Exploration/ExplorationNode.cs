@@ -1,5 +1,6 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
+using UnityEngine;
 
 public class ExplorationNode : MonoBehaviour
 {
@@ -48,7 +49,6 @@ public class ExplorationNode : MonoBehaviour
     }
     public void Unlock()
     {
-        if (!CanUnlock()) return;
         ExplorationEnergyManager.Instance.Spend(unlockCost);
         unlocked = true;
         foreach (var fog in fogBlockers)
@@ -59,7 +59,9 @@ public class ExplorationNode : MonoBehaviour
             }
         }
         RewardResolver.Resolve(this);
+        SceneLoader.Instance.currentMapSpawn = transform.position;
+        //SaveManager.Instance.SaveGame();
         Refresh();
-        SaveManager.Instance.SaveGame();
+
     }
 }

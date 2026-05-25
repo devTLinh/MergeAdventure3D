@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEditor.FilePathAttribute;
 
 public class SceneLoader : MonoBehaviour{
     public static SceneLoader Instance;
@@ -15,19 +17,36 @@ public class SceneLoader : MonoBehaviour{
         }
         Instance = this;
     }
-    public void LoadMap(string sceneName){
-        if (!string.IsNullOrEmpty(currentMap)) return;
-        StartCoroutine(LoadMapRoutine(sceneName));
+    public void LoadMap(){
+        if (string.IsNullOrEmpty(currentMap)) return;
+        StartCoroutine(LoadMapRoutine());
     }
-    IEnumerator LoadMapRoutine(string sceneName){
-        currentMap = sceneName;
+    IEnumerator LoadMapRoutine(){
         CoreGameplayController.Instance.HideCore();
-        yield return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        yield return SceneManager.LoadSceneAsync(currentMap, LoadSceneMode.Additive);
         yield return null;
-        MapSpawn spawn = FindObjectOfType<MapSpawn>();
-        yield return StartCoroutine(TeleportPlayerRoutine(spawn));
+        if(currentMapSpawn == Vector3.zero){
+            MapSpawn spawn = FindObjectOfType<MapSpawn>();
+            currentMapSpawn = spawn.transform.position;
+            StartCoroutine(TeleportPlayerRoutine(spawn));
+        }
+        else yield return StartCoroutine(TeleportPlayerRoutine());
     }
-    IEnumerator TeleportPlayerRoutine(MapSpawn spawn){
+    IEnumerator TeleportPlayerRoutine(){
+        if (player == null || currentMapSpawn == null) yield break;
+        CharacterController cc = player.GetComponent<CharacterController>();
+        if (cc != null) cc.enabled = false;
+        yield return null;
+        yield return new WaitForEndOfFrame();
+        player.position = currentMapSpawn;
+        player.rotation = Quaternion.identity;
+        Physics.SyncTransforms();
+        yield return null;
+        if (cc != null) cc.enabled = true;
+        Debug.Log("TP OK -> " + player.position);
+    }
+    IEnumerator TeleportPlayerRoutine(MapSpawn spawn)
+    {
         if (player == null || spawn == null) yield break;
         CharacterController cc = player.GetComponent<CharacterController>();
         if (cc != null) cc.enabled = false;
@@ -35,7 +54,6 @@ public class SceneLoader : MonoBehaviour{
         yield return new WaitForEndOfFrame();
         player.position = spawn.transform.position;
         player.rotation = spawn.transform.rotation;
-        currentMapSpawn = spawn.transform.position;
         Physics.SyncTransforms();
         yield return null;
         if (cc != null) cc.enabled = true;
@@ -57,6 +75,5 @@ public class SceneLoader : MonoBehaviour{
         CoreGameplayController.Instance.ShowCore();
         MapSpawn spawn = FindObjectOfType<MapSpawn>();
         yield return StartCoroutine(TeleportPlayerRoutine(spawn));
-        currentMap = null;
     }
 }

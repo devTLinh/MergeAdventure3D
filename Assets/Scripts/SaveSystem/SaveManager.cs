@@ -45,7 +45,7 @@ public class SaveManager : MonoBehaviour
         SavePlayer(data);
         SaveBoard(data);
         SaveOrders(data);
-        //SaveNodes(data);
+        SaveNodes(data);
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(savePath, json);
         Debug.Log("GAME SAVED");
@@ -65,9 +65,8 @@ public class SaveManager : MonoBehaviour
         LoadPlayer(data);
         LoadBoard(data);
         EnergyRegenManager.Instance.ApplyOfflineRegen(data);
-        //LoadNodes(data);
+        LoadNodes(data);
         LoadOrders(data);
-        SceneLoader.Instance.RestoreMapState(data);
         Debug.Log("GAME LOADED");
     }
     void SavePlayer(GameSaveData data)
@@ -141,28 +140,34 @@ public class SaveManager : MonoBehaviour
     }
     void SaveNodes(GameSaveData data)
     {
-        data.nodes.Clear();
-        ExplorationNode[] nodes = FindObjectsOfType<ExplorationNode>();
-        foreach (ExplorationNode node in nodes)
-        {
-            NodeSaveData save = new NodeSaveData();
-            save.nodeID = node.nodeId;
-            save.unlocked = node.unlocked;
-            data.nodes.Add(save);
-        }
+        data.currentScene = SceneLoader.Instance.currentMap;
+        //data.nodes.Clear();
+        //ExplorationNode[] nodes = FindObjectsOfType<ExplorationNode>();
+        //foreach (ExplorationNode node in nodes)
+        //{
+        //    NodeSaveData save = new NodeSaveData();
+        //    save.nodeID = node.nodeId;
+        //    save.unlocked = node.unlocked;
+        //    data.nodes.Add(save);
+        //}
     }
     void LoadNodes(GameSaveData data)
     {
-        ExplorationNode[] nodes = FindObjectsOfType<ExplorationNode>();
-        foreach (ExplorationNode node in nodes){
-            foreach (NodeSaveData save in data.nodes)
-            {
-                if (save.nodeID != node.nodeId) continue;
-                if (save.unlocked)
-                {
-                    node.Unlock();
-                }
-            }
+        if (string.IsNullOrEmpty(data.currentScene)){
+            SceneLoader.Instance.currentMap = "ForestCamp";
+            return;
         }
+        SceneLoader.Instance.RestoreMapState(data);
+        //ExplorationNode[] nodes = FindObjectsOfType<ExplorationNode>();
+        //foreach (ExplorationNode node in nodes){
+        //    foreach (NodeSaveData save in data.nodes)
+        //    {
+        //        if (save.nodeID != node.nodeId) continue;
+        //        if (save.unlocked)
+        //        {
+        //            node.Unlock();
+        //        }
+        //    }
+        //}
     }
 }

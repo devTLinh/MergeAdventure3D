@@ -3,7 +3,7 @@ public class PlayerInteraction : MonoBehaviour {
     [SerializeField] Camera cam; 
     void Update() {
         if (Input.GetMouseButtonDown(0)) Interact();
-        if (Input.GetMouseButtonDown(1)) SceneLoader.Instance.LoadMap("ForestCamp");
+        if (Input.GetMouseButtonDown(1)) SceneLoader.Instance.LoadMap();
         if(Input.GetKeyDown(KeyCode.Space)) SceneLoader.Instance.ReturnToCore();
     } 
     void Interact() { 
