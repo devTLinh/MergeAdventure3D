@@ -12,7 +12,7 @@ public class OrdersPanelUI : MonoBehaviour {
         for (int i = 0; i < textRequirements.Count; i++) {
             if (i < order.source.requirements.Count) {
                 OrderRequirement req = order.source.requirements[i];
-                textRequirements[i].text = req.item.mergeGroup + " Level" + req.item.level + ": " + req.item.itemName + " (" + order.remain[i] + ")";
+                textRequirements[i].text = req.item.mergeGroup + " Level " + req.item.level + ": " + req.item.itemName + " (" + order.remain[i] + ")";
                 textRequirements[i].gameObject.SetActive(true);
             } else {
                 textRequirements[i].gameObject.SetActive(false);

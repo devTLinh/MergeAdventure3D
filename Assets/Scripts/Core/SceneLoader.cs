@@ -5,7 +5,8 @@ using UnityEngine.SceneManagement;
 public class SceneLoader : MonoBehaviour{
     public static SceneLoader Instance;
     [SerializeField] Transform player;
-    string currentMap;
+    public Vector3 currentMapSpawn;
+    public string currentMap;
     void Awake()
     {
         if (Instance != null && Instance != this){
@@ -34,10 +35,16 @@ public class SceneLoader : MonoBehaviour{
         yield return new WaitForEndOfFrame();
         player.position = spawn.transform.position;
         player.rotation = spawn.transform.rotation;
+        currentMapSpawn = spawn.transform.position;
         Physics.SyncTransforms();
         yield return null;
         if (cc != null) cc.enabled = true;
         Debug.Log("TP OK -> " + player.position);
+    }
+    public void RestoreMapState(GameSaveData data)
+    {
+        currentMap = data.currentScene;
+        currentMapSpawn = new Vector3(data.mapSpawnX, data.mapSpawnY, data.mapSpawnZ);
     }
     public void ReturnToCore(){
         if (string.IsNullOrEmpty(currentMap)) return;

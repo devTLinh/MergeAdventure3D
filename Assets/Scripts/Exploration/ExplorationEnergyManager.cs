@@ -26,6 +26,7 @@ public class ExplorationEnergyManager : MonoBehaviour
     }
     public void Add(int amount)
     {
+        if (CurrentEnergy >= MaxEnergy) return;
         CurrentEnergy = Mathf.Clamp( CurrentEnergy + amount, 0 , MaxEnergy);
     }
     public void Set(int value)

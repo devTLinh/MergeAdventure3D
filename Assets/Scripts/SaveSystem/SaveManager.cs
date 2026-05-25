@@ -1,5 +1,6 @@
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SaveManager : MonoBehaviour
 {
@@ -43,6 +44,7 @@ public class SaveManager : MonoBehaviour
         GameSaveData data = new GameSaveData();
         SavePlayer(data);
         SaveBoard(data);
+        SaveOrders(data);
         //SaveNodes(data);
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(savePath, json);
@@ -64,6 +66,8 @@ public class SaveManager : MonoBehaviour
         LoadBoard(data);
         EnergyRegenManager.Instance.ApplyOfflineRegen(data);
         //LoadNodes(data);
+        LoadOrders(data);
+        SceneLoader.Instance.RestoreMapState(data);
         Debug.Log("GAME LOADED");
     }
     void SavePlayer(GameSaveData data)
@@ -77,6 +81,11 @@ public class SaveManager : MonoBehaviour
     {
         EnergyManager.Instance.Set(data.energy);
         ExplorationEnergyManager.Instance.Set(data.exploreEnergy);
+        data.currentScene = SceneLoader.Instance.currentMap;
+        Vector3 pos = SceneLoader.Instance.currentMapSpawn;
+        data.mapSpawnX = pos.x;
+        data.mapSpawnY = pos.y;
+        data.mapSpawnZ = pos.z;
     }
     void SaveBoard(GameSaveData data)
     {
@@ -107,6 +116,29 @@ public class SaveManager : MonoBehaviour
             ItemFactory.Instance.SpawnToSlot( slot, itemData);
         }
     }
+    void SaveOrders(GameSaveData data)
+    {
+        data.activeOrders.Clear();
+        for (int i = 0; i < OrderManager.Instance.ActiveOrders.Count; i++)
+        {
+            RuntimeOrder order = OrderManager.Instance.ActiveOrders[i];
+            if (order == null) continue;
+            data.activeOrders.Add(order.orderIndex);
+        }
+    }
+    void LoadOrders(GameSaveData data){
+        OrderManager.Instance.ActiveOrders.Clear();
+        if ( data.activeOrders == null || data.activeOrders.Count == 0){
+            OrderManager.Instance.FillOrders();
+            return;
+        }
+        foreach (int save  in data.activeOrders)
+        {
+            OrderData dataOrder = OrderManager.Instance.GetOrderData(save);
+            RuntimeOrder order = new RuntimeOrder(dataOrder, save);
+            OrderManager.Instance.ActiveOrders.Add(order);
+        }
+    }
     void SaveNodes(GameSaveData data)
     {
         data.nodes.Clear();
@@ -122,9 +154,7 @@ public class SaveManager : MonoBehaviour
     void LoadNodes(GameSaveData data)
     {
         ExplorationNode[] nodes = FindObjectsOfType<ExplorationNode>();
-
-        foreach (ExplorationNode node in nodes)
-        {
+        foreach (ExplorationNode node in nodes){
             foreach (NodeSaveData save in data.nodes)
             {
                 if (save.nodeID != node.nodeId) continue;

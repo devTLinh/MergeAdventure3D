@@ -12,15 +12,30 @@ public class OrderManager : MonoBehaviour {
     private void Awake() { 
         Instance = this;
     } 
-    private void Start() { 
-        FillOrders();
+    private void Start() {
+        nextOrderIndex = GetNextOrderIndex();
     } 
     public void FillOrders() {
         while (ActiveOrders.Count < maxActiveOrders) { 
             OrderData data = orderPool[nextOrderIndex];
-            ActiveOrders.Add(new RuntimeOrder(data));
+            ActiveOrders.Add(new RuntimeOrder(data, nextOrderIndex));
             nextOrderIndex = (nextOrderIndex + 1) % orderPool.Count;
         }
+    }
+    public int GetNextOrderIndex()
+    {
+        int max = -1;
+        foreach (RuntimeOrder order in ActiveOrders)
+        {
+            if (order.orderIndex  > max){
+                max = order.orderIndex;
+            }
+        }
+        return max + 1;
+    }
+    public OrderData GetOrderData(int index) {
+        if (index < 0 || index >= orderPool.Count) return null;
+        return orderPool[index];
     }
     public bool TryDeliver(ItemView item) { 
         if (item == null) return false;
@@ -40,12 +55,10 @@ public class OrderManager : MonoBehaviour {
         NotificationUI.Instance.Show("No Order Needs This");
         return false;
     }
-    void CompleteOrder(RuntimeOrder order) { 
-        EnergyManager.Instance.Add(order.source.rewardEnergy);
+    void CompleteOrder(RuntimeOrder order) {
+        ExplorationEnergyManager.Instance.CurrentEnergy += order.source.rewardEnergy;
         NotificationUI.Instance.Show("Order Complete! +" + order.source.rewardEnergy + " Energy");
         ActiveOrders.Remove(order);
         FillOrders();
-        EnergyManager.Instance.Add(order.source.rewardEnergy);
-        ExplorationEnergyManager.Instance.Add(2);
     }
 }
