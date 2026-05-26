@@ -40,6 +40,7 @@ public class SceneLoader : MonoBehaviour{
         yield return new WaitForEndOfFrame();
         player.position = currentMapSpawn;
         player.rotation = Quaternion.identity;
+        SaveManager.Instance.LoadNodesForScene(currentMap);
         Physics.SyncTransforms();
         yield return null;
         if (cc != null) cc.enabled = true;
@@ -54,6 +55,7 @@ public class SceneLoader : MonoBehaviour{
         yield return new WaitForEndOfFrame();
         player.position = spawn.transform.position;
         player.rotation = spawn.transform.rotation;
+        SaveManager.Instance.LoadNodesForScene(currentMap);
         Physics.SyncTransforms();
         yield return null;
         if (cc != null) cc.enabled = true;
@@ -66,6 +68,7 @@ public class SceneLoader : MonoBehaviour{
     }
     public void ReturnToCore(){
         if (string.IsNullOrEmpty(currentMap)) return;
+        SaveManager.Instance.SaveNodesCurrentScene();
         StartCoroutine(ReturnRoutine());
     }
     IEnumerator ReturnRoutine()

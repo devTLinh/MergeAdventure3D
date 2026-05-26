@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,6 +7,7 @@ public class SaveManager : MonoBehaviour
 {
     public static SaveManager Instance;
     public GameSaveData currentData;
+    Dictionary<string, bool> nodeLookup = new Dictionary<string, bool>();
     string savePath;
     bool initialized;
 
@@ -39,6 +41,14 @@ public class SaveManager : MonoBehaviour
             LoadGame();
         }
     }
+    void BuildNodeLookup()
+    {
+        nodeLookup.Clear();
+        if (currentData == null || currentData.nodes == null) return;
+        foreach(NodeSaveData node in currentData.nodes) {
+            nodeLookup[node.nodeId] = node.unlocked;
+        }
+    }
     public void SaveGame()
     {
         GameSaveData data = new GameSaveData();
@@ -46,7 +56,7 @@ public class SaveManager : MonoBehaviour
         SaveBoard(data);
         SaveOrders(data);
         SaveStateScene(data);
-        //SaveNodes(data);
+        if(currentData != null) data.nodes = currentData.nodes;
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(savePath, json);
         Debug.Log("GAME SAVED");
@@ -66,10 +76,10 @@ public class SaveManager : MonoBehaviour
         LoadPlayer(data);
         LoadBoard(data);
         EnergyRegenManager.Instance.ApplyOfflineRegen(data);
-        //LoadNodes(data);
         LoadSceneState(data);
         LoadOrders(data);
         currentData = data;
+        BuildNodeLookup();
         Debug.Log("GAME LOADED");
     }
     void SavePlayer(GameSaveData data)
@@ -149,16 +159,38 @@ public class SaveManager : MonoBehaviour
             return;
         }
         SceneLoader.Instance.RestoreMapState(data);
-        //ExplorationNode[] nodes = FindObjectsOfType<ExplorationNode>();
-        //foreach (ExplorationNode node in nodes){
-        //    foreach (NodeSaveData save in data.nodes)
-        //    {
-        //        if (save.nodeID != node.nodeId) continue;
-        //        if (save.unlocked)
-        //        {
-        //            node.Unlock();
-        //        }
-        //    }
-        //}
+    }
+    public void SaveNodesCurrentScene(){
+        if (currentData == null){
+            currentData = new GameSaveData();
+        }
+        if (currentData.currentScene != SceneLoader.Instance.currentMap){ 
+            currentData.nodes = new List<NodeSaveData>();
+            nodeLookup.Clear();
+        }
+        ExplorationNode[] nodes = FindObjectsOfType<ExplorationNode>();
+        foreach (ExplorationNode node in nodes){
+            nodeLookup[node.nodeId] = node.unlocked;
+        }
+        currentData.nodes.Clear();
+        foreach (var kv in nodeLookup)
+        {
+            NodeSaveData save = new NodeSaveData();
+            save.nodeId = kv.Key;
+            save.unlocked = kv.Value;
+            currentData.nodes.Add(save);
+        }
+        Debug.Log("Nodes Saved");
+    }
+    public void LoadNodesForScene(string sceneName){
+        if (currentData == null || currentData.currentScene != sceneName) return;
+        ExplorationNode[] nodes = FindObjectsOfType<ExplorationNode>();
+        foreach (ExplorationNode node in nodes){
+            if(!nodeLookup.ContainsKey(node.nodeId)) continue;
+            else if(nodeLookup[node.nodeId]){
+                    node.Unlock();
+            }
+        }
+        Debug.Log("Node restore " + sceneName);
     }
 }
