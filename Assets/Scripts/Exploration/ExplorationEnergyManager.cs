@@ -5,14 +5,13 @@ public class ExplorationEnergyManager : MonoBehaviour
 
     public int MaxEnergy = 40;
 
-    public int CurrentEnergy = 20;
+    public int CurrentEnergy = 40;
     [Header("Regen")]
     public int regenAmount = 1;
     public int regenMinutes = 5;
     private void Awake()
     {
         Instance = this;
-        //CurrentEnergy = MaxEnergy;
     }
     public bool HasEnough(int amount)
     {
@@ -22,6 +21,10 @@ public class ExplorationEnergyManager : MonoBehaviour
     {
         if (!HasEnough(amount)) return false;
         CurrentEnergy -= amount;
+        if (CurrentEnergy < MaxEnergy)
+        {
+            EnergyRegenManager.Instance.EnsureExploreEnergyTimer();
+        }
         return true;
     }
     public void Add(int amount)

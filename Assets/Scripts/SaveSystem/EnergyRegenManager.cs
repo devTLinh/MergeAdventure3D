@@ -23,7 +23,11 @@ public class EnergyRegenManager : MonoBehaviour{
     }
     void TickEnergy(){
         if (nextEnergyTime == default) return;
-        if (EnergyManager.Instance.current >= EnergyManager.Instance.max) return;
+        if (EnergyManager.Instance.current >= EnergyManager.Instance.max)
+        {
+            nextEnergyTime = default;
+            return;
+        }
         int safety = 0;
         while (DateTime.UtcNow >= nextEnergyTime && safety < EnergyManager.Instance.max)
         {
@@ -34,7 +38,11 @@ public class EnergyRegenManager : MonoBehaviour{
     }
     void TickExplore(){
         if (nextExploreTime == default) return;
-        if (ExplorationEnergyManager.Instance.CurrentEnergy >= ExplorationEnergyManager.Instance.MaxEnergy) return;
+        if (ExplorationEnergyManager.Instance.CurrentEnergy >= ExplorationEnergyManager.Instance.MaxEnergy)
+        {
+            nextExploreTime = default;
+            return;
+        }
         int safety = 0;
         while (DateTime.UtcNow >= nextExploreTime && safety < ExplorationEnergyManager.Instance.MaxEnergy)
         {
@@ -107,7 +115,26 @@ public class EnergyRegenManager : MonoBehaviour{
             + "\nNext Explore = "
             + nextExploreTime);
     }
-
+    public void StartRealtimeTimers()
+    {
+        nextEnergyTime = DateTime.UtcNow.AddMinutes(EnergyManager.Instance.regenMinutes);
+        nextExploreTime = DateTime.UtcNow.AddMinutes(ExplorationEnergyManager.Instance.regenMinutes);
+        Debug.Log("Realtime Regen Started");
+    }
+    public void EnsureEnergyTimer()
+    {
+        if (nextEnergyTime == default)
+        {
+            nextEnergyTime = DateTime.UtcNow.AddMinutes(EnergyManager.Instance.regenMinutes);
+        }
+    }
+    public void EnsureExploreEnergyTimer()
+    {
+        if (nextExploreTime == default)
+        {
+            nextExploreTime = DateTime.UtcNow.AddMinutes(ExplorationEnergyManager.Instance.regenMinutes);
+        }
+    }
     public TimeSpan EnergyCountdown(){
         TimeSpan remain = nextEnergyTime - DateTime.UtcNow;
         if (remain.TotalSeconds < 0){

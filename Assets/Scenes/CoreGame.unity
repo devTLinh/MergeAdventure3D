@@ -96,7 +96,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 2f12263ea980798418b03ed8a84dbc03, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -246,7 +246,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxEnergy: 40
-  CurrentEnergy: 20
+  CurrentEnergy: 40
   regenAmount: 1
   regenMinutes: 5
 --- !u!1 &27353577
@@ -6057,7 +6057,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bd4e7cdfd6aeee449ac3fc09b3fb0a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  current: 20
+  current: 100
   max: 100
   regenAmount: 1
   regenMinutes: 2
@@ -6958,6 +6958,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f9f2fc61d96ba748a915e47b3c5dc03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentData:
+    energy: 0
+    exploreEnergy: 0
+    energyTimestamp: 
+    exploreTimestamp: 
+    currentScene: 
+    mapSpawnX: 0
+    mapSpawnY: 0
+    mapSpawnZ: 0
+    boardItems: []
+    nodes: []
+    activeOrders: 
 --- !u!1 &1102603581
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,7 +1,7 @@
 using UnityEngine;
 public class EnergyManager : MonoBehaviour { 
     public static EnergyManager Instance; 
-    public int current = 20; 
+    public int current = 100; 
     public int max = 100;
     [Header("Regen")]
     public int regenAmount = 1;
@@ -15,6 +15,10 @@ public class EnergyManager : MonoBehaviour {
     public bool Spend(int amount) {
         if (!HasEnough(amount)) return false;
         current -= amount;
+        if (current < max)
+        {
+            EnergyRegenManager.Instance.EnsureEnergyTimer();
+        }
         return true;
     } 
     public void Add(int amount) {

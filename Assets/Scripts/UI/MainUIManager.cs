@@ -1,4 +1,6 @@
+using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainUIManager : MonoBehaviour{
     public static MainUIManager Instance;
@@ -9,6 +11,11 @@ public class MainUIManager : MonoBehaviour{
     public GameObject profilePanel;
     void Awake(){
         Instance = this;
+    }
+    public bool HasLocalSave()
+    {
+        string path = UnityEngine.Application.persistentDataPath + "/save.json";
+        return File.Exists(path);
     }
     void HideAll(){
         loginPanel.SetActive(false);
@@ -42,5 +49,10 @@ public class MainUIManager : MonoBehaviour{
 
     public void ShowLoading(){
         loadingPanel.SetActive(true);
+    }
+    public void PlayGame()
+    {
+        SceneManager.LoadScene(
+            "CoreGame");
     }
 }

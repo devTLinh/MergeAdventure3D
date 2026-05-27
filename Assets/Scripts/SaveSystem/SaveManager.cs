@@ -27,7 +27,26 @@ public class SaveManager : MonoBehaviour
     {
         if (initialized) return;
         initialized = true;
-        LoadGame();
+        if (GameLaunchData.StartNewGame)
+        {
+            NewGame();
+        }
+        else
+        {
+            LoadGame();
+        }
+    }
+    public void NewGame()
+    {
+        if (File.Exists(savePath))
+        {
+            File.Delete(savePath);
+        }
+        currentData = new GameSaveData();
+        SceneLoader.Instance.currentMap = "ForestCamp";
+        EnergyRegenManager.Instance.StartRealtimeTimers();
+        OrderManager.Instance.FillOrders();
+        Debug.Log("NEW GAME");
     }
     private void Update()
     {
