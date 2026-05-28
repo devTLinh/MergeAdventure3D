@@ -35,19 +35,12 @@ MonoBehaviour
 
         userIdText.text = user.UserId;
 
-        saveStatusText.text = HasLocalSave() ? "Found" : "Empty";
+        saveStatusText.text =
+            GameLaunchData
+            .HasCloudSave
+            ? "Cloud Save Found"
+            : "No Cloud Save";
     }
-
-    bool HasLocalSave()
-    {
-        string path =
-            Application.persistentDataPath
-            + "/save.json";
-
-        return
-            System.IO.File.Exists(path);
-    }
-
     public void Logout()
     {
         AuthManager.Instance.Logout();

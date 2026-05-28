@@ -16,6 +16,12 @@ public class PersistentRoot : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
     }
+    public void Shutdown()
+    {
+        Instance = null;
+
+        Destroy(gameObject);
+    }
     void OnApplicationQuit()
     {
         SaveManager.Instance.SaveGame();

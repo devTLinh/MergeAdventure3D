@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class SaveManager : MonoBehaviour
 {
@@ -10,46 +9,14 @@ public class SaveManager : MonoBehaviour
     Dictionary<string, bool> nodeLookup = new Dictionary<string, bool>();
     string savePath;
     bool initialized;
-
-    private void Awake()
-    {
+    void Awake(){
         Instance = this;
-
-        savePath =
-            Application.persistentDataPath
-            + "/save.json";
+        savePath = Application.persistentDataPath + "/save.json";
     }
-    private void Start()
-    {
+    void Start(){
         InitializeGame();
     }
-    public void InitializeGame()
-    {
-        if (initialized) return;
-        initialized = true;
-        if (GameLaunchData.StartNewGame)
-        {
-            NewGame();
-        }
-        else
-        {
-            LoadGame();
-        }
-    }
-    public void NewGame()
-    {
-        if (File.Exists(savePath))
-        {
-            File.Delete(savePath);
-        }
-        currentData = new GameSaveData();
-        SceneLoader.Instance.currentMap = "ForestCamp";
-        EnergyRegenManager.Instance.StartRealtimeTimers();
-        OrderManager.Instance.FillOrders();
-        Debug.Log("NEW GAME");
-    }
-    private void Update()
-    {
+    void Update(){
         if (Input.GetKeyDown(KeyCode.F5))
         {
             SaveGame();
@@ -60,130 +27,148 @@ public class SaveManager : MonoBehaviour
             LoadGame();
         }
     }
-    void BuildNodeLookup()
-    {
-        nodeLookup.Clear();
-        if (currentData == null || currentData.nodes == null) return;
-        foreach(NodeSaveData node in currentData.nodes) {
-            nodeLookup[node.nodeId] = node.unlocked;
+    public void InitializeGame(){
+        if (initialized) return;
+        initialized = true;
+        if (GameLaunchData.StartNewGame){
+            NewGame();
+            return;
+        }
+        if (GameLaunchData.HasCloudSave){
+            LoadGame();
+        }
+        else{
+            NewGame();
         }
     }
-    public void SaveGame()
-    {
+
+    public void NewGame(){
+        if (File.Exists(savePath)){
+            File.Delete(savePath);
+        }
+        currentData = new GameSaveData();
+        nodeLookup.Clear();
+        SceneLoader.Instance.currentMap = "ForestCamp";
+        BoardManager.Instance.ClearBoard();
+        OrderManager.Instance.ActiveOrders.Clear();
+        OrderManager.Instance.FillOrders();
+        EnergyManager.Instance.Set(EnergyManager.Instance.max);
+        ExplorationEnergyManager.Instance.Set(ExplorationEnergyManager.Instance.MaxEnergy);
+        EnergyRegenManager.Instance.StartRealtimeTimers();
+        Debug.Log("NEW GAME");
+    }
+    public void SaveGame(){
         GameSaveData data = new GameSaveData();
         SavePlayer(data);
         SaveBoard(data);
         SaveOrders(data);
         SaveStateScene(data);
-        if(currentData != null) data.nodes = currentData.nodes;
+        if (currentData != null){
+            data.nodes = currentData.nodes;
+        }
         string json = JsonUtility.ToJson(data, true);
-        File.WriteAllText(savePath, json);
+        File.WriteAllText(savePath,json);
+        currentData = data;
         Debug.Log("GAME SAVED");
-        Debug.Log("Link:" + savePath);
+        Debug.Log("Link: " + savePath);
     }
-    public void LoadGame()
-    {
-        if (!File.Exists(savePath))
-        {
-            Debug.Log("NO SAVE FILE");
-
+    public void LoadGame(){
+        if (!File.Exists(savePath)){
+            Debug.Log( "NO SAVE FILE");
+            NewGame();
             return;
         }
         string json = File.ReadAllText(savePath);
         GameSaveData data = JsonUtility.FromJson<GameSaveData>(json);
-        Debug.Log("Link:" + savePath);
-        LoadPlayer(data);
-        LoadBoard(data);
-        EnergyRegenManager.Instance.ApplyOfflineRegen(data);
-        LoadSceneState(data);
-        LoadOrders(data);
         currentData = data;
         BuildNodeLookup();
-        Debug.Log("GAME LOADED");
+        LoadPlayer(data);
+        LoadBoard(data);
+        LoadSceneState(data);
+        LoadOrders(data);
+        EnergyRegenManager.Instance.ApplyOfflineRegen(data);
+        Debug.Log( "GAME LOADED");
     }
-    void SavePlayer(GameSaveData data)
-    {
+    void SavePlayer( GameSaveData data){
         data.energy = EnergyManager.Instance.current;
         data.exploreEnergy = ExplorationEnergyManager.Instance.CurrentEnergy;
         data.energyTimestamp = System.DateTime.UtcNow.ToString("o");
-        data.exploreTimestamp = System.DateTime.UtcNow.ToString("o");
+        data.exploreTimestamp =  System.DateTime.UtcNow.ToString("o");
     }
-    void LoadPlayer(GameSaveData data)
-    {
+
+    void LoadPlayer(GameSaveData data){
         EnergyManager.Instance.Set(data.energy);
         ExplorationEnergyManager.Instance.Set(data.exploreEnergy);
     }
-    void SaveBoard(GameSaveData data)
-    {
+    void SaveBoard(GameSaveData data){
         data.boardItems.Clear();
-        for (int i = 0; i < BoardManager.Instance.slots.Length; i++)
-        {
+        for (int i = 0; i < BoardManager.Instance.slots.Length; i++){
             BoardSlot slot = BoardManager.Instance.slots[i];
             if (slot.currentItem == null) continue;
             ItemSaveData save = new ItemSaveData();
-            save.mergeGroup = slot.currentItem.Model.Data.mergeGroup;
-            save.level = slot.currentItem.Model.Data.level;
+            save.mergeGroup =  slot.currentItem.Model.Data.mergeGroup;
+            save.level = slot.currentItem .Model.Data.level;
             save.slotIndex = i;
             data.boardItems.Add(save);
         }
     }
-    void LoadBoard(GameSaveData data)
-    {
+    void LoadBoard(GameSaveData data){
         BoardManager.Instance.ClearBoard();
-        foreach (ItemSaveData save in data.boardItems)
-        {
+        foreach ( ItemSaveData save in data.boardItems){
             BoardSlot slot = BoardManager.Instance.slots[save.slotIndex];
             ItemData itemData = ItemDatabase.Instance.Get(save.mergeGroup, save.level);
-            if (itemData == null)
-            {
+            if (itemData == null){
                 Debug.LogError("Missing ItemData");
                 continue;
             }
-            ItemFactory.Instance.SpawnToSlot( slot, itemData);
+            ItemFactory.Instance.SpawnToSlot(slot, itemData);
         }
     }
-    void SaveOrders(GameSaveData data)
-    {
+    void SaveOrders(GameSaveData data){
         data.activeOrders.Clear();
-        for (int i = 0; i < OrderManager.Instance.ActiveOrders.Count; i++)
-        {
-            RuntimeOrder order = OrderManager.Instance.ActiveOrders[i];
+        foreach ( RuntimeOrder order in OrderManager.Instance.ActiveOrders){
             if (order == null) continue;
             data.activeOrders.Add(order.orderIndex);
         }
     }
     void LoadOrders(GameSaveData data){
         OrderManager.Instance.ActiveOrders.Clear();
-        if ( data.activeOrders == null || data.activeOrders.Count == 0){
+        if (data.activeOrders == null || data.activeOrders.Count == 0){
             OrderManager.Instance.FillOrders();
             return;
         }
-        foreach (int save  in data.activeOrders)
-        {
-            OrderData dataOrder = OrderManager.Instance.GetOrderData(save);
-            RuntimeOrder order = new RuntimeOrder(dataOrder, save);
+        foreach (int id in data.activeOrders){
+            OrderData dataOrder = OrderManager.Instance.GetOrderData(id);
+            RuntimeOrder order = new RuntimeOrder(dataOrder, id);
             OrderManager.Instance.ActiveOrders.Add(order);
         }
     }
     void SaveStateScene(GameSaveData data){
         data.currentScene = SceneLoader.Instance.currentMap;
-        data.mapSpawnX = SceneLoader.Instance.currentMapSpawn.x;
-        data.mapSpawnY = SceneLoader.Instance.currentMapSpawn.y;    
-        data.mapSpawnZ = SceneLoader.Instance.currentMapSpawn.z;
+        Vector3 spawn = SceneLoader.Instance.currentMapSpawn;
+        data.mapSpawnX = spawn.x;
+        data.mapSpawnY = spawn.y;
+        data.mapSpawnZ = spawn.z;
     }
-    void LoadSceneState(GameSaveData data)
-    {
+    void LoadSceneState(GameSaveData data){
         if (string.IsNullOrEmpty(data.currentScene)){
-            SceneLoader.Instance.currentMap = "ForestCamp";
+            SceneLoader.Instance .currentMap = "ForestCamp";
             return;
         }
         SceneLoader.Instance.RestoreMapState(data);
+    }
+    void BuildNodeLookup(){
+        nodeLookup.Clear();
+        if (currentData == null || currentData.nodes == null) return;
+        foreach ( NodeSaveData node in currentData.nodes){
+            nodeLookup[node.nodeId] = node.unlocked;
+        }
     }
     public void SaveNodesCurrentScene(){
         if (currentData == null){
             currentData = new GameSaveData();
         }
-        if (currentData.currentScene != SceneLoader.Instance.currentMap){ 
+        if (currentData.currentScene != SceneLoader.Instance.currentMap){
             currentData.nodes = new List<NodeSaveData>();
             nodeLookup.Clear();
         }
@@ -192,22 +177,20 @@ public class SaveManager : MonoBehaviour
             nodeLookup[node.nodeId] = node.unlocked;
         }
         currentData.nodes.Clear();
-        foreach (var kv in nodeLookup)
-        {
-            NodeSaveData save = new NodeSaveData();
-            save.nodeId = kv.Key;
-            save.unlocked = kv.Value;
-            currentData.nodes.Add(save);
+        foreach ( var kv in nodeLookup){
+            currentData.nodes.Add(new NodeSaveData{
+                    nodeId = kv.Key,
+                    unlocked = kv.Value
+            });
         }
         Debug.Log("Nodes Saved");
     }
     public void LoadNodesForScene(string sceneName){
         if (currentData == null || currentData.currentScene != sceneName) return;
         ExplorationNode[] nodes = FindObjectsOfType<ExplorationNode>();
-        foreach (ExplorationNode node in nodes){
-            if(!nodeLookup.ContainsKey(node.nodeId)) continue;
-            else if(nodeLookup[node.nodeId]){
-                    node.Unlock();
+        foreach ( ExplorationNode node in nodes){
+            if (nodeLookup.TryGetValue(node.nodeId, out bool unlocked) && unlocked){
+                node.Unlock();
             }
         }
         Debug.Log("Node restore " + sceneName);

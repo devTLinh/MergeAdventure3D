@@ -7,7 +7,11 @@ public class MenuUI : MonoBehaviour
     [SerializeField] private GameObject continueButton;
     private void Start()
     {
-        continueButton.SetActive(MainUIManager.Instance.HasLocalSave());
+        continueButton.SetActive(GameLaunchData.HasCloudSave);
+    }
+    void OnEnable()
+    {
+        continueButton.SetActive(GameLaunchData.HasCloudSave);
     }
     public void Play()
     {

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,10 +13,21 @@ public class MainUIManager : MonoBehaviour{
     void Awake(){
         Instance = this;
     }
-    public bool HasLocalSave()
+    void Start()
     {
-        string path = UnityEngine.Application.persistentDataPath + "/save.json";
-        return File.Exists(path);
+        RefreshUIState();
+    }
+    public void RefreshUIState()
+    {
+        if (AuthManager.Instance != null &&
+            AuthManager.Instance.CurrentUser != null)
+        {
+            ShowMenu();
+        }
+        else
+        {
+            ShowLogin();
+        }
     }
     void HideAll(){
         loginPanel.SetActive(false);
@@ -54,5 +66,20 @@ public class MainUIManager : MonoBehaviour{
     {
         SceneManager.LoadScene(
             "CoreGame");
+    }
+    public void ShowMenuDelayed()
+    {
+        StartCoroutine(
+            MenuDelayRoutine());
+    }
+
+    IEnumerator MenuDelayRoutine()
+    {
+        ShowLoading();
+
+        yield return new WaitForSeconds(
+            1.5f);
+
+        ShowMenu();
     }
 }
