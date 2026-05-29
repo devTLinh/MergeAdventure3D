@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static UnityEditor.FilePathAttribute;
 
 public class SceneLoader : MonoBehaviour{
     public static SceneLoader Instance;

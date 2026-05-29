@@ -19,6 +19,13 @@ public class MainUIManager : MonoBehaviour{
     }
     public void RefreshUIState()
     {
+        //
+        if (GameLaunchData.IsGuest)
+        {
+            ShowMenu();
+            return;
+        }
+        //
         if (AuthManager.Instance != null &&
             AuthManager.Instance.CurrentUser != null)
         {

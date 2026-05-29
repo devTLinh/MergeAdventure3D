@@ -37,7 +37,7 @@ MonoBehaviour
 
         bool success =
             false;
-        if (CloudSaveManager.Instance != null)
+        if (!GameLaunchData.IsGuest && CloudSaveManager.Instance != null)
         {
             CloudSaveManager
             .Instance
@@ -71,6 +71,7 @@ MonoBehaviour
 
         GameLaunchData.HasCloudSave =
             true;
+        Debug.Log("Returning to Menu..." + GameLaunchData.IsGuest);
         if (PersistentRoot.Instance != null)
         {
             PersistentRoot

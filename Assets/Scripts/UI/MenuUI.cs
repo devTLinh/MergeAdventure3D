@@ -1,4 +1,5 @@
 using System.Collections;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,11 +8,27 @@ public class MenuUI : MonoBehaviour
     [SerializeField] private GameObject continueButton;
     private void Start()
     {
-        continueButton.SetActive(GameLaunchData.HasCloudSave);
+        //continueButton.SetActive(GameLaunchData.HasCloudSave);
+        bool hasSave =
+    File.Exists(
+        Application
+        .persistentDataPath
+        + "/save.json");
+
+        continueButton
+            .SetActive(hasSave);
     }
     void OnEnable()
     {
-        continueButton.SetActive(GameLaunchData.HasCloudSave);
+        // continueButton.SetActive(GameLaunchData.HasCloudSave);
+        bool hasSave =
+     File.Exists(
+         Application
+         .persistentDataPath
+         + "/save.json");
+
+        continueButton
+            .SetActive(hasSave);
     }
     public void Play()
     {
@@ -61,6 +78,58 @@ public class MenuUI : MonoBehaviour
 
     public void Quit()
     {
+        StartCoroutine(QuitRoutine());
+    }
+    IEnumerator QuitRoutine()
+    {
+        if (SaveManager.Instance != null)
+        {
+            SaveManager
+                .Instance
+                .SaveGame();
+        }
+
+        bool done =
+            false;
+
+        bool success =
+            false;
+
+        if (!GameLaunchData.IsGuest
+            && CloudSaveManager.Instance != null)
+        {
+            CloudSaveManager
+            .Instance
+            .UploadSave(
+            result =>
+            {
+                success =
+                    result;
+
+                done =
+                    true;
+            });
+
+            while (!done)
+            {
+                yield return null;
+            }
+
+            if (!success)
+            {
+                Debug.LogWarning(
+                    "Cloud Upload Failed");
+            }
+            else
+            {
+                Debug.Log(
+                    "Cloud Upload Success");
+            }
+        }
+
+        Debug.Log(
+            "Quit Game");
+
         Application.Quit();
     }
 }

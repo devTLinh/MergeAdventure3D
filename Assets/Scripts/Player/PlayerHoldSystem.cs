@@ -1,33 +1,62 @@
 using UnityEngine;
-public class PlayerHoldSystem : MonoBehaviour {
-    public static PlayerHoldSystem Instance; 
+
+public class PlayerHoldSystem :
+MonoBehaviour
+{
+    public static PlayerHoldSystem Instance;
     [SerializeField] Transform holdPoint;
-    public ItemView HeldItem { get; private set; } 
-    void Awake() { 
+    public ItemView HeldItem{
+        get;
+        private set;
+    }
+
+    void Awake(){
         Instance = this;
-    } 
-    public void Pickup(ItemView item) {
-        if (HeldItem != null) {
-            MergeManager.Instance.TryMerge(HeldItem, item);
-            HeldItem = null;
+    }
+
+    public bool IsHolding(){
+        return HeldItem != null;
+    }
+
+    public void Pickup(ItemView item){
+        if (item == null) return;
+        if (item == HeldItem) return;
+        if (HeldItem != null){
+            bool merged =  MergeManager.Instance .TryMerge(HeldItem,item);
+            if (merged){
+                HeldItem = null;
+            }
             return;
         }
         HeldItem = item;
-        if (item.CurrentSlot != null) item.CurrentSlot.Clear();
+        if (item.CurrentSlot != null){
+            item.CurrentSlot.Clear();
+        }
         item.transform.SetParent(holdPoint);
-        item.transform.localPosition = new Vector3(0.35f, -0.2f, 0.6f);
+        item.transform.localPosition =new Vector3( 0.35f, -0.2f,0.6f);
+        Collider col = item.GetComponent<Collider>();
+        if (col != null){
+            col.enabled = false;
+        }
     }
-    public void Place(BoardSlot slot) {
+
+    public void Place( BoardSlot slot){
         if (HeldItem == null) return;
-        if (slot.IsEmpty()) { 
+        if (slot.IsEmpty()){
+            Collider col = HeldItem.GetComponent<Collider>();
+            if (col != null){
+                col.enabled = true;
+            }
             slot.SetItem(HeldItem);
             HeldItem = null;
             return;
         }
-        MergeManager.Instance.TryMerge(HeldItem, slot.currentItem);
-        HeldItem = null;
-    } 
-    public void ClearHeld() { 
+        bool merged = MergeManager.Instance.TryMerge(HeldItem,slot.currentItem);
+        if (merged){
+            HeldItem = null;
+        }
+    }
+    public void ClearHeld(){
         HeldItem = null;
     }
 }

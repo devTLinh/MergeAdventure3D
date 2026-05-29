@@ -1726,7 +1726,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerBody: {fileID: 164562450}
-  sensitivity: 500
 --- !u!81 &196063488
 AudioListener:
   m_ObjectHideFlags: 0
