@@ -23,8 +23,7 @@ public class LoginUI
     }
     public void Guest()
     {
-        GameLaunchData.IsGuest = true;
-        MainUIManager.Instance.ShowMenu();
+        AuthManager.Instance.LoginGuest();
     }
     public void ShowError(
         string msg)

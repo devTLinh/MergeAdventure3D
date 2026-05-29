@@ -20,7 +20,7 @@ public class MainUIManager : MonoBehaviour{
     public void RefreshUIState()
     {
         //
-        if (GameLaunchData.IsGuest)
+        if (GameMode.IsGuest)
         {
             ShowMenu();
             return;

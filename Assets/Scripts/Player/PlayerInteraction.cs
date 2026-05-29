@@ -3,7 +3,7 @@ public class PlayerInteraction : MonoBehaviour {
     [SerializeField] Camera cam; 
     void Update() {
         if (Input.GetMouseButtonDown(0)) Interact();
-        if (Input.GetMouseButtonDown(1)) SceneLoader.Instance.LoadMap();
+        //if (Input.GetMouseButtonDown(1)) SceneLoader.Instance.LoadMap();
         if(Input.GetKeyDown(KeyCode.Space)) SceneLoader.Instance.ReturnToCore();
     } 
     void Interact() { 
@@ -27,6 +27,11 @@ public class PlayerInteraction : MonoBehaviour {
             return;
         }
         //
+        if (hit.collider.TryGetComponent(out GatePortal gate)){
+            gate.Interact();
+            return;
+        }
+
         if (hit.collider.TryGetComponent(out ItemView item)) {
             PlayerHoldSystem.Instance.Pickup(item);
             return;

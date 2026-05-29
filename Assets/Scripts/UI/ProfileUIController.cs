@@ -69,16 +69,6 @@ MonoBehaviour
     }
     public void Logout()
     {
-        //
-        if (GameLaunchData.IsGuest)
-        {
-            MainUIManager
-                .Instance
-                .ShowLogin();
-
-            return;
-        }
-        // Logout the user
         AuthManager.Instance.Logout();
     }
 

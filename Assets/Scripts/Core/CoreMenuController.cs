@@ -71,7 +71,6 @@ MonoBehaviour
                     "Cloud Upload Success");
             }
         }
-
         // Reset launch state
         GameLaunchData.StartNewGame =
             false;
@@ -90,13 +89,6 @@ MonoBehaviour
                 .HasCloudSave =
                 success;
         }
-
-        Debug.Log(
-            "Returning To Menu | Guest="
-            + GameLaunchData.IsGuest
-            + " | Cloud="
-            + GameLaunchData.HasCloudSave);
-
         // Destroy gameplay persistent
         if (PersistentRoot.Instance != null)
         {

@@ -170,9 +170,7 @@ MonoBehaviour
                         .HasCloudSave =
                         hasSave;
 
-                    GameLaunchData
-                        .IsGuest =
-                        false;
+                    GameMode.SetCloud();
 
                     Debug.Log(
                         hasSave
@@ -186,9 +184,7 @@ MonoBehaviour
             }
             else
             {
-                GameLaunchData
-                    .IsGuest =
-                    false;
+                GameMode.SetCloud();
 
                 MainUIManager
                     .Instance
@@ -220,9 +216,9 @@ MonoBehaviour
         {
             if (task.IsFaulted)
             {
-                MainUIManager
-                    .Instance
-                    ?.ShowLogin();
+                //MainUIManager
+                //    .Instance
+                //    ?.ShowLogin();
 
                 string msg =
                     "Register Failed";
@@ -291,9 +287,7 @@ MonoBehaviour
                     .HasCloudSave =
                     false;
 
-                GameLaunchData
-                    .IsGuest =
-                    false;
+                GameMode.SetCloud();
 
                 MainUIManager
                     .Instance
@@ -328,25 +322,9 @@ MonoBehaviour
     public void Logout()
     {
         // Guest logout
-        if (GameLaunchData.IsGuest)
+        if (GameMode.IsGuest)
         {
-            DeleteLocalSave();
-
-            CurrentUser =
-                null;
-
-            GameLaunchData
-                .IsGuest =
-                false;
-
-            GameLaunchData
-                .HasCloudSave =
-                false;
-
-            MainUIManager
-                .Instance
-                ?.ShowLogin();
-
+            ExitGuest();
             return;
         }
 
@@ -379,9 +357,7 @@ MonoBehaviour
             .HasCloudSave =
             false;
 
-        GameLaunchData
-            .IsGuest =
-            false;
+        GameMode.SetCloud();
 
         MainUIManager
             .Instance
@@ -412,9 +388,8 @@ MonoBehaviour
         CurrentUser =
             null;
 
-        GameLaunchData
-            .IsGuest =
-            true;
+        GameMode
+            .SetGuest();
 
         GameLaunchData
             .HasCloudSave =
@@ -429,10 +404,10 @@ MonoBehaviour
     }
     public void ExitGuest()
     {
+        DeleteLocalSave();
         CurrentUser = null;
 
-        GameLaunchData.IsGuest =
-            false;
+        GameMode.SetCloud();
 
         GameLaunchData.HasCloudSave =
             false;

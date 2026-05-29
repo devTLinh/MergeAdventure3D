@@ -80,6 +80,7 @@ MonoBehaviour
 
         Debug.Log(
             "Firebase Ready");
+        GameMode.LoadMode();
 
         AuthManager
         .Instance

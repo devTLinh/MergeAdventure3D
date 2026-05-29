@@ -257,7 +257,7 @@ public class SaveManager : MonoBehaviour
         ExplorationNode[] nodes = FindObjectsOfType<ExplorationNode>();
         foreach ( ExplorationNode node in nodes){
             if (nodeLookup.TryGetValue(node.nodeId, out bool unlocked) && unlocked){
-                node.Unlock();
+                node.unlocked = true;
             }
         }
         Debug.Log("Node restore " + sceneName);

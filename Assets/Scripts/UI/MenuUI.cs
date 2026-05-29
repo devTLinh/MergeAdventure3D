@@ -69,7 +69,6 @@ public class MenuUI : MonoBehaviour
     public void Logout()
     {
         AuthManager.Instance.Logout();
-        MainUIManager.Instance.ShowLogin();
     }
 
     public void Quit()
@@ -91,7 +90,7 @@ public class MenuUI : MonoBehaviour
         bool success =
             false;
 
-        if (!GameLaunchData.IsGuest
+        if (!GameMode.IsGuest
             && CloudSaveManager.Instance != null)
         {
             CloudSaveManager
