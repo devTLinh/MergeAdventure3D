@@ -1,3 +1,4 @@
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,6 +17,21 @@ MonoBehaviour
 
     public void Refresh()
     {
+        if (GameMode.IsGuest)
+        {
+            usernameText.text =
+                "Guest";
+
+            userIdText.text =
+                "-";
+
+            saveStatusText.text =
+                HasLocalSave()
+                ? "Local Save"
+                : "Empty";
+
+            return;
+        }
         if (AuthManager.Instance == null)
             return;
 
@@ -27,11 +43,11 @@ MonoBehaviour
 
         usernameText.text = user.DisplayName;
 
-        if (string.IsNullOrEmpty(
-            user.DisplayName))
-        {
-            usernameText.text = "Local User";
-        }
+        //if (string.IsNullOrEmpty(
+        //    user.DisplayName))
+        //{
+        //    usernameText.text = "Local User";
+        //}
 
         userIdText.text = user.UserId;
 
@@ -40,6 +56,16 @@ MonoBehaviour
             .HasCloudSave
             ? "Cloud Save Found"
             : "No Cloud Save";
+    }
+    bool HasLocalSave()
+    {
+        string path =
+            Application
+            .persistentDataPath
+            + "/save.json";
+
+        return File.Exists(
+            path);
     }
     public void Logout()
     {

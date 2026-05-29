@@ -54,14 +54,9 @@ MonoBehaviour
         Action<bool> onDone)
     {
         // Guest mode
-        if (GameLaunchData.IsGuest)
+        if (!GameMode.UseCloud)
         {
-            Debug.Log(
-                "Guest Mode - Skip Upload");
-
-            onDone?.Invoke(
-                false);
-
+            onDone(false);
             return;
         }
         if (!IsReady || db == null)
@@ -159,14 +154,9 @@ MonoBehaviour
         Action<bool> onDone)
     {
         // Guest mode
-        if (GameLaunchData.IsGuest)
+        if (!GameMode.UseCloud)
         {
-            Debug.Log(
-                "Guest Mode - Skip Download");
-
-            onDone?.Invoke(
-                false);
-
+            onDone(false);
             return;
         }
 

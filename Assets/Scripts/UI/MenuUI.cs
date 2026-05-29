@@ -8,27 +8,23 @@ public class MenuUI : MonoBehaviour
     [SerializeField] private GameObject continueButton;
     private void Start()
     {
-        //continueButton.SetActive(GameLaunchData.HasCloudSave);
-        bool hasSave =
-    File.Exists(
-        Application
-        .persistentDataPath
-        + "/save.json");
-
-        continueButton
-            .SetActive(hasSave);
+        continueButton.SetActive(
+        HasLocalSave());
     }
     void OnEnable()
     {
-        // continueButton.SetActive(GameLaunchData.HasCloudSave);
-        bool hasSave =
-     File.Exists(
-         Application
-         .persistentDataPath
-         + "/save.json");
+        continueButton.SetActive(
+        HasLocalSave());
+    }
+    bool HasLocalSave()
+    {
+        string path =
+            Application
+            .persistentDataPath
+            + "/save.json";
 
-        continueButton
-            .SetActive(hasSave);
+        return File.Exists(
+            path);
     }
     public void Play()
     {

@@ -28,24 +28,31 @@ MonoBehaviour
         Cursor.visible =
             true;
 
+        // Always save local
         SaveManager
             .Instance
             .SaveGame();
 
-        bool done =
-            false;
-
         bool success =
             false;
-        if (!GameLaunchData.IsGuest && CloudSaveManager.Instance != null)
+
+        // Account mode → upload cloud
+        if (GameMode.UseCloud
+            && CloudSaveManager.Instance != null)
         {
+            bool done =
+                false;
+
             CloudSaveManager
             .Instance
             .UploadSave(
             result =>
             {
-                success = result;
-                done = true;
+                success =
+                    result;
+
+                done =
+                    true;
             });
 
             while (!done)
@@ -69,9 +76,28 @@ MonoBehaviour
         GameLaunchData.StartNewGame =
             false;
 
-        GameLaunchData.HasCloudSave =
-            true;
-        Debug.Log("Returning to Menu..." + GameLaunchData.IsGuest);
+        // Guest
+        if (GameMode.IsGuest)
+        {
+            GameLaunchData
+                .HasCloudSave =
+                false;
+        }
+        // Account
+        else
+        {
+            GameLaunchData
+                .HasCloudSave =
+                success;
+        }
+
+        Debug.Log(
+            "Returning To Menu | Guest="
+            + GameLaunchData.IsGuest
+            + " | Cloud="
+            + GameLaunchData.HasCloudSave);
+
+        // Destroy gameplay persistent
         if (PersistentRoot.Instance != null)
         {
             PersistentRoot
@@ -79,7 +105,8 @@ MonoBehaviour
                 .Shutdown();
         }
 
-        SceneManager.LoadScene(
-            "Main");
+        SceneManager
+            .LoadScene(
+                "Main");
     }
 }

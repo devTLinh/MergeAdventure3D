@@ -27,23 +27,33 @@ public class SaveManager : MonoBehaviour
             LoadGame();
         }
     }
-    public void InitializeGame(){
-        if (initialized) return;
+    public void InitializeGame()
+    {
+        if (initialized)
+            return;
+
         initialized = true;
-        if (GameLaunchData.StartNewGame){
-            NewGame();
+
+        if (GameLaunchData.StartNewGame)
+        {
+            NewGame(true);
             return;
         }
-        if (GameLaunchData.HasCloudSave){
+
+        bool canLoad =
+            GameMode.IsGuest
+            ? HasLocalSave()
+            : GameLaunchData.HasCloudSave;
+
+        if (canLoad)
             LoadGame();
-        }
-        else{
+        else
             NewGame();
-        }
     }
 
-    public void NewGame(){
-        if (File.Exists(savePath)){
+    public void NewGame(bool deleteOld = false)
+    {
+        if (deleteOld && File.Exists(savePath)){
             File.Delete(savePath);
         }
         currentData = new GameSaveData();
@@ -57,14 +67,33 @@ public class SaveManager : MonoBehaviour
         EnergyRegenManager.Instance.StartRealtimeTimers();
         Debug.Log("NEW GAME");
     }
+    bool HasLocalSave()
+    {
+        return
+            File.Exists(
+                savePath);
+    }
     public void SaveGame(){
         GameSaveData data = new GameSaveData();
         SavePlayer(data);
         SaveBoard(data);
         SaveOrders(data);
         SaveStateScene(data);
-        if (currentData != null){
-            data.nodes = currentData.nodes;
+        data.nodes = new List<NodeSaveData>();
+        if (currentData != null
+            && currentData.nodes != null)
+        {
+            foreach (var n in currentData.nodes)
+            {
+                data.nodes.Add(
+                    new NodeSaveData
+                    {
+                        nodeId =
+                            n.nodeId,
+                        unlocked =
+                            n.unlocked
+                    });
+            }
         }
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(savePath,json);
@@ -75,11 +104,35 @@ public class SaveManager : MonoBehaviour
     public void LoadGame(){
         if (!File.Exists(savePath)){
             Debug.Log( "NO SAVE FILE");
-            NewGame();
+            NewGame(false);
             return;
         }
         string json = File.ReadAllText(savePath);
-        GameSaveData data = JsonUtility.FromJson<GameSaveData>(json);
+        GameSaveData data = null;
+        try
+        {
+            data =
+                JsonUtility
+                .FromJson<GameSaveData>(
+                    json);
+        }
+        catch
+        {
+            Debug.LogError(
+                "Bad Save File");
+
+            NewGame(false);
+            return;
+        }
+
+        if (data == null)
+        {
+            Debug.LogError(
+                "Invalid Save");
+
+            NewGame(false);
+            return;
+        }
         currentData = data;
         BuildNodeLookup();
         LoadPlayer(data);
@@ -113,6 +166,7 @@ public class SaveManager : MonoBehaviour
         }
     }
     void LoadBoard(GameSaveData data){
+        if (data.boardItems == null) return;
         BoardManager.Instance.ClearBoard();
         foreach ( ItemSaveData save in data.boardItems){
             BoardSlot slot = BoardManager.Instance.slots[save.slotIndex];
@@ -139,6 +193,14 @@ public class SaveManager : MonoBehaviour
         }
         foreach (int id in data.activeOrders){
             OrderData dataOrder = OrderManager.Instance.GetOrderData(id);
+            if (dataOrder == null)
+            {
+                Debug.LogWarning(
+                    "Missing OrderData "
+                    + id);
+
+                continue;
+            }
             RuntimeOrder order = new RuntimeOrder(dataOrder, id);
             OrderManager.Instance.ActiveOrders.Add(order);
         }
@@ -175,6 +237,11 @@ public class SaveManager : MonoBehaviour
         ExplorationNode[] nodes = FindObjectsOfType<ExplorationNode>();
         foreach (ExplorationNode node in nodes){
             nodeLookup[node.nodeId] = node.unlocked;
+        }
+        if (currentData.nodes == null)
+        {
+            currentData.nodes =
+                new List<NodeSaveData>();
         }
         currentData.nodes.Clear();
         foreach ( var kv in nodeLookup){

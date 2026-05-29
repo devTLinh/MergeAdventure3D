@@ -65,7 +65,7 @@ MonoBehaviour
             return;
 
         // Guest mode
-        if (GameLaunchData.IsGuest)
+        if (GameMode.IsGuest)
         {
             MainUIManager
                 .Instance
@@ -406,6 +406,7 @@ MonoBehaviour
         }
     }
 
+
     public void LoginGuest()
     {
         CurrentUser =
@@ -425,5 +426,19 @@ MonoBehaviour
 
         Debug.Log(
             "Guest Mode");
+    }
+    public void ExitGuest()
+    {
+        CurrentUser = null;
+
+        GameLaunchData.IsGuest =
+            false;
+
+        GameLaunchData.HasCloudSave =
+            false;
+
+        MainUIManager
+            .Instance
+            ?.ShowLogin();
     }
 }
