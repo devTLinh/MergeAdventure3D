@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4315500326021963542}
   - component: {fileID: 3536583935104870871}
   - component: {fileID: 8690773989315882260}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Broccoli
   m_TagString: Untagged
   m_Icon: {fileID: 0}

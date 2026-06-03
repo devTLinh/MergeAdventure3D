@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5328238691374235564}
   - component: {fileID: 2153283002001314370}
   - component: {fileID: 1711327929319223787}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DeleveryBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}

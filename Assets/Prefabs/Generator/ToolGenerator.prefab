@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4181664850906796639}
   - component: {fileID: 6771988048321424379}
   - component: {fileID: 2196750871440174774}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ToolGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 7750849968061734400}
   - component: {fileID: 1207824022798381485}
   - component: {fileID: 5299627119879230246}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}

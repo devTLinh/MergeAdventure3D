@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7899702153958047714}
   - component: {fileID: -639087315553776864}
   - component: {fileID: -3149645734332658994}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Pitchfork
   m_TagString: Untagged
   m_Icon: {fileID: 0}

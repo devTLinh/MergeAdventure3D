@@ -64,6 +64,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LargeCan
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b966d421706519f43a87885860b98d28, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

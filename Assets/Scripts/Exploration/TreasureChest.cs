@@ -1,5 +1,5 @@
 using UnityEngine;
-public class TreasureChest : MonoBehaviour {
+public class TreasureChest : MonoBehaviour, IHoverInfo {
     public void Open() {
         int roll = Random.Range(0, 100);
         if (roll < 40) {
@@ -17,5 +17,11 @@ public class TreasureChest : MonoBehaviour {
             NotificationUI.Instance.Show("Rare Item");
         }
         Destroy(gameObject);
+    }
+    public string GetHoverText()
+    {
+        return
+            "[Treasure Chest]\n" +
+            "Left Click: Open";
     }
 }

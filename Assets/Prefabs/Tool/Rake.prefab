@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2753902080832909100}
   - component: {fileID: 146554621242100881}
   - component: {fileID: 5730157998453540099}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Rake
   m_TagString: Untagged
   m_Icon: {fileID: 0}

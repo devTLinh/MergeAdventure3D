@@ -1,5 +1,5 @@
 using UnityEngine;
-public class Generator : MonoBehaviour {
+public class Generator : MonoBehaviour, IHoverInfo{
     [SerializeField] GeneratorData data;
     int charges;
     float nextReady = 0f; 
@@ -19,5 +19,11 @@ public class Generator : MonoBehaviour {
     }
     bool CanUse() {
         return charges > 0 && Time.time >= nextReady && EnergyManager.Instance.HasEnough(data.energyCost); 
-    } 
+    }
+    public string GetHoverText()
+    {
+        return
+            "[ "+ data.displayName +" ]\n" +
+            "Left Click: Produce";
+    }
 }

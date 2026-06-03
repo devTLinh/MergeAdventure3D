@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5913540803611127575}
   - component: {fileID: -8679682597658161322}
   - component: {fileID: 4552260176039210645}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ChestPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,6 +118,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 77f5c0b4bd459a4449d0c09d444e204b, type: 3}
       propertyPath: m_Name
       value: Chest
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 77f5c0b4bd459a4449d0c09d444e204b, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

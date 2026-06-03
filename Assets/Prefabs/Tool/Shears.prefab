@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5756666067930600833}
   - component: {fileID: 9041909963882818138}
   - component: {fileID: 6139795850591596693}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Shears_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 2547064440799441368}
   - component: {fileID: -4278732650522245619}
   - component: {fileID: -7640453967158788013}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Shears
   m_TagString: Untagged
   m_Icon: {fileID: 0}

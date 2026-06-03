@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 597151149879907500}
   - component: {fileID: 2022347484152013429}
   - component: {fileID: 2975359707469988818}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BeverageGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -131,6 +131,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: cd43d538d2494054c86c2c813e2d1fd2, type: 3}
       propertyPath: m_Name
       value: vendo
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cd43d538d2494054c86c2c813e2d1fd2, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

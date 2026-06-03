@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4616281388442514680}
   - component: {fileID: -8300879180716139275}
   - component: {fileID: 3695096419291956250}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Showel0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

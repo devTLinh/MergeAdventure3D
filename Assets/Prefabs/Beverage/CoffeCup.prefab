@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6180576804846699617}
   - component: {fileID: -5483567076497074783}
   - component: {fileID: 8643176175161730541}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CoffeCup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
