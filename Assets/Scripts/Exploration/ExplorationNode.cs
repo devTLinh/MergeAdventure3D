@@ -59,6 +59,7 @@ public class ExplorationNode : MonoBehaviour
         }
         RewardResolver.Resolve(this);
         SceneLoader.Instance.currentMapSpawn = transform.position;
+        TutorialManager.Instance.Notify(TutorialStep.UnlockNode);
         //SaveManager.Instance.SaveGame();
         Refresh();
 

@@ -5,6 +5,7 @@ MonoBehaviour, IHoverInfo
 {
     public void Interact()
     {
+        TutorialManager.Instance.Notify(TutorialStep.EnterPortal);
         SceneLoader
             .Instance
             .LoadMap();

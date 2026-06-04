@@ -69,6 +69,7 @@ public class SceneLoader : MonoBehaviour{
         if (string.IsNullOrEmpty(currentMap)) return;
         SaveManager.Instance.SaveNodesCurrentScene();
         StartCoroutine(ReturnRoutine());
+        TutorialManager.Instance.Notify(TutorialStep.ReturnToCore);
     }
     IEnumerator ReturnRoutine()
     {

@@ -38,6 +38,7 @@ MonoBehaviour
         if (col != null){
             col.enabled = false;
         }
+        TutorialManager.Instance.Notify(TutorialStep.PickupItem);
     }
 
     public void Place( BoardSlot slot){
@@ -49,6 +50,7 @@ MonoBehaviour
             }
             slot.SetItem(HeldItem);
             HeldItem = null;
+            TutorialManager.Instance.Notify(TutorialStep.PlaceItem);
             return;
         }
         bool merged = MergeManager.Instance.TryMerge(HeldItem,slot.currentItem);

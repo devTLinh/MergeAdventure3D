@@ -65,6 +65,11 @@ public class SaveManager : MonoBehaviour
         EnergyManager.Instance.Set(EnergyManager.Instance.max);
         ExplorationEnergyManager.Instance.Set(ExplorationEnergyManager.Instance.MaxEnergy);
         EnergyRegenManager.Instance.StartRealtimeTimers();
+        //Tutorial
+        if (!TutorialManager.Instance.IsCompleted())
+        {
+            TutorialManager.Instance.StartTutorial();
+        }
         Debug.Log("NEW GAME");
     }
     bool HasLocalSave()

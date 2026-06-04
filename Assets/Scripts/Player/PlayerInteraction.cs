@@ -5,6 +5,8 @@ public class PlayerInteraction : MonoBehaviour {
         if (Input.GetMouseButtonDown(0)) Interact();
         //if (Input.GetMouseButtonDown(1)) SceneLoader.Instance.LoadMap();
         if(Input.GetKeyDown(KeyCode.Space)) SceneLoader.Instance.ReturnToCore();
+        if (Input.GetKeyDown(KeyCode.H)) HelpManager.Instance.OpenPage(0);
+
     } 
     void Interact() { 
         Ray ray = new Ray(cam.transform.position, cam.transform.forward);

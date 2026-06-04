@@ -60,5 +60,6 @@ public class OrderManager : MonoBehaviour {
         NotificationUI.Instance.Show("Order Complete! +" + order.source.rewardEnergy + " Energy");
         ActiveOrders.Remove(order);
         FillOrders();
+        TutorialManager.Instance.Notify(TutorialStep.CompleteOrder);
     }
 }

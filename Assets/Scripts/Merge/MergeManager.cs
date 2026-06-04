@@ -13,6 +13,7 @@ public class MergeManager : MonoBehaviour {
         Destroy(a.gameObject);
         Destroy(b.gameObject);
         ItemFactory.Instance.SpawnToSlot(slot, next);
+        TutorialManager.Instance.Notify(TutorialStep.MergeItems);
         return true;
     }
 }
