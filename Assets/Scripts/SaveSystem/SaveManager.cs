@@ -66,10 +66,7 @@ public class SaveManager : MonoBehaviour
         ExplorationEnergyManager.Instance.Set(ExplorationEnergyManager.Instance.MaxEnergy);
         EnergyRegenManager.Instance.StartRealtimeTimers();
         //Tutorial
-        if (!TutorialManager.Instance.IsCompleted())
-        {
-            TutorialManager.Instance.StartTutorial();
-        }
+        TutorialManager.Instance.LoadStep(TutorialStep.UseGenerator);
         Debug.Log("NEW GAME");
     }
     bool HasLocalSave()
@@ -100,6 +97,7 @@ public class SaveManager : MonoBehaviour
                     });
             }
         }
+        SaveTutorial(data);
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(savePath,json);
         currentData = data;
@@ -144,6 +142,7 @@ public class SaveManager : MonoBehaviour
         LoadBoard(data);
         LoadSceneState(data);
         LoadOrders(data);
+        LoadTutorial(data);
         EnergyRegenManager.Instance.ApplyOfflineRegen(data);
         Debug.Log( "GAME LOADED");
     }
@@ -266,5 +265,27 @@ public class SaveManager : MonoBehaviour
             }
         }
         Debug.Log("Node restore " + sceneName);
+    }
+    void SaveTutorial(
+    GameSaveData data)
+    {
+        data.tutorialStep = (int) TutorialManager.Instance.CurrentStep;
+    }
+    void LoadTutorial(
+    GameSaveData data)
+    {
+        if (data.tutorialStep <= 0)
+        {
+            TutorialManager.Instance
+                .LoadStep(
+                TutorialStep.UseGenerator);
+
+            return;
+        }
+
+        TutorialManager.Instance
+            .LoadStep(
+            (TutorialStep)
+            data.tutorialStep);
     }
 }

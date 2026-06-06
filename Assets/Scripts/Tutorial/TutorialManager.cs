@@ -37,7 +37,18 @@ MonoBehaviour
                 TutorialKey,
                 0) == 1;
     }
-
+    public void LoadStep(
+    TutorialStep step)
+    {
+        CurrentStep = step;
+        if (step == TutorialStep.Finished)
+        {
+            TutorialUI.Instance.Hide();
+            return;
+        }
+        IsRunning = true;
+        ShowCurrentStep();
+    }
     public void StartTutorial()
     {
         CurrentStep =
@@ -119,8 +130,6 @@ MonoBehaviour
 
     void ShowCurrentStep()
     {
-        Debug.Log(
-            $"Current tutorial step: {CurrentStep}");
         TutorialUI.Instance.Show(
             CurrentStep);
     }

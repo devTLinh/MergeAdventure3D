@@ -6,6 +6,7 @@ public class HelpUI :
 MonoBehaviour
 {
     public static HelpUI Instance;
+    public bool isOpen;
 
     public GameObject root;
 
@@ -26,9 +27,8 @@ MonoBehaviour
     public void Show()
     {
         root.SetActive(true);
-
-        Cursor.lockState =
-            CursorLockMode.None;
+        isOpen = true;
+        Cursor.lockState = CursorLockMode.None;
 
         Cursor.visible = true;
     }
@@ -36,7 +36,7 @@ MonoBehaviour
     public void Hide()
     {
         root.SetActive(false);
-
+        isOpen = false;
         Cursor.lockState =
             CursorLockMode.Locked;
 

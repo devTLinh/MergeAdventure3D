@@ -20,4 +20,6 @@ public class GameSaveData
     public List<NodeSaveData> nodes = new List<NodeSaveData>();
     // ORDER
     public List<int> activeOrders = new List<int>();
+    // TUTORIAL
+    public int tutorialStep;
 }

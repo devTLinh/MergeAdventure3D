@@ -6,6 +6,9 @@ public class PlayerLook : MonoBehaviour
     float xRotation = 0f;
     void Update() { 
         float sensitivity = GameSettingsManager.Instance.MouseSensitivity;
+        if(HelpUI.Instance.isOpen) {
+            sensitivity = 0f;
+        }
         float mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
         xRotation -= mouseY;
