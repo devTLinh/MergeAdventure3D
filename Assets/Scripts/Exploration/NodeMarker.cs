@@ -4,6 +4,7 @@ public class NodeMarker : MonoBehaviour, IHoverInfo
     [SerializeField] ExplorationNode node;
     public void Interact()
     {
+        Debug.Log("interact");
         ExplorationNodeManager.Instance.TryUnlock(node);
     }
     public string GetHoverText()

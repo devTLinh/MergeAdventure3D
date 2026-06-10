@@ -6,14 +6,8 @@ public class ExplorationNodeManager : MonoBehaviour {
     }
     public void TryUnlock(ExplorationNode node) { 
         if (node == null) return;
-        if (!node.CanUnlock()) {
-            NotificationUI.Instance.Show("Path Locked");
-            return;
-        } 
-        if (!ExplorationEnergyManager.Instance.Spend(node.unlockCost)) {
-            NotificationUI.Instance.Show("Need Explore Energy");
-            return;
-        }
+        if (!node.CanUnlock()) return;
+        ExplorationEnergyManager.Instance.Spend(node.unlockCost);
         node.Unlock();
         NotificationUI.Instance.Show("Unlocked Area");
 

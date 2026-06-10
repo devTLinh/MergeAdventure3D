@@ -5,11 +5,11 @@ public static class RewardResolver {
             case NodeRewardType.None:
                 break;
             case NodeRewardType.Energy: 
-                EnergyManager.Instance.Add(5); 
+                EnergyManager.Instance.Set(EnergyManager.Instance.current + 5); 
                 NotificationUI.Instance.Show("+5 Energy");
                 break;
             case NodeRewardType.ExploreEnergy:
-                ExplorationEnergyManager.Instance.Add(3);
+                ExplorationEnergyManager.Instance.Set(ExplorationEnergyManager.Instance.CurrentEnergy + 3);
                 NotificationUI.Instance.Show("+3 Explore"); 
                 break;
             case NodeRewardType.Treasure:
@@ -22,7 +22,7 @@ public static class RewardResolver {
                 NotificationUI.Instance.Show("Rare Artifact");
                 break;
             case NodeRewardType.RegionGate: 
-                RegionTransitionSystem.OpenGate(node);
+                RegionTransitionSystem.OpenGate();
                 break;
         }
     }

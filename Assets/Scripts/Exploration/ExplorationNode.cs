@@ -34,7 +34,11 @@ public class ExplorationNode : MonoBehaviour
     public bool CanUnlock()
     {
         if (unlocked) return false;
-        if (!ExplorationEnergyManager.Instance.HasEnough(unlockCost)) return false;
+        if (!ExplorationEnergyManager.Instance.HasEnough(unlockCost)) 
+        {
+            NotificationUI.Instance.Show("Need Explore Energy");
+            return false;
+        }
         if (connectedNodes.Count == 0) return true;
         foreach (var node in connectedNodes)
         {
@@ -43,12 +47,11 @@ public class ExplorationNode : MonoBehaviour
                 return true;
             }
         }
-
+        NotificationUI.Instance.Show("Path Locked");
         return false;
     }
     public void Unlock()
     {
-        ExplorationEnergyManager.Instance.Spend(unlockCost);
         unlocked = true;
         foreach (var fog in fogBlockers)
         {
