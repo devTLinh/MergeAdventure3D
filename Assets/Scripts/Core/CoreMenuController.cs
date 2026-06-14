@@ -18,6 +18,7 @@ MonoBehaviour
     {
         StartCoroutine(
             ReturnRoutine());
+        AudioManager.Instance.MusicForScene("Main");
     }
 
     IEnumerator ReturnRoutine()

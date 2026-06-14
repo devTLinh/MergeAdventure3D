@@ -28,6 +28,7 @@ MonoBehaviour
             }
             return;
         }
+        AudioManager.Instance.PlaySfx(2);
         HeldItem = item;
         if (item.CurrentSlot != null){
             item.CurrentSlot.Clear();
@@ -50,6 +51,7 @@ MonoBehaviour
             }
             slot.SetItem(HeldItem);
             HeldItem = null;
+            AudioManager.Instance.PlaySfx(3);
             TutorialManager.Instance.Notify(TutorialStep.PlaceItem);
             return;
         }

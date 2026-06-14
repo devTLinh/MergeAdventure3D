@@ -16,10 +16,12 @@ public class SceneLoader : MonoBehaviour{
             return;
         }
         Instance = this;
+        AudioManager.Instance.MusicForScene("CoreGame");
     }
     public void LoadMap(){
         if (string.IsNullOrEmpty(currentMap)) return;
         StartCoroutine(LoadMapRoutine());
+        AudioManager.Instance.MusicForScene(currentMap);
     }
     IEnumerator LoadMapRoutine(){
         CoreGameplayController.Instance.HideCore();
@@ -75,6 +77,7 @@ public class SceneLoader : MonoBehaviour{
         if (string.IsNullOrEmpty(currentMap)) return;
         SaveManager.Instance.SaveNodesCurrentScene();
         StartCoroutine(ReturnRoutine());
+        AudioManager.Instance.MusicForScene("CoreGame");
         TutorialManager.Instance.Notify(TutorialStep.ReturnToCore);
     }
     IEnumerator ReturnRoutine()

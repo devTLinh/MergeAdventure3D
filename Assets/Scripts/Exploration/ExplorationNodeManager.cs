@@ -7,6 +7,7 @@ public class ExplorationNodeManager : MonoBehaviour {
     public void TryUnlock(ExplorationNode node) { 
         if (node == null) return;
         if (!node.CanUnlock()) return;
+        AudioManager.Instance.PlaySfx(8);
         ExplorationEnergyManager.Instance.Spend(node.unlockCost);
         node.Unlock();
     } 

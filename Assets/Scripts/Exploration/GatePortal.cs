@@ -6,9 +6,11 @@ MonoBehaviour, IHoverInfo
     public void Interact()
     {
         TutorialManager.Instance.Notify(TutorialStep.EnterPortal);
+        AudioManager.Instance.PlaySfx(7);
         SceneLoader
             .Instance
             .LoadMap();
+        
     }
     public string GetHoverText()
     {

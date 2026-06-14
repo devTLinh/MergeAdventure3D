@@ -1,5 +1,5 @@
 using UnityEngine;
-[CreateAssetMenu(menuName = "Merge Frontier/Item")]
+[CreateAssetMenu(menuName = "Merge Adventure/Item")]
 public class ItemData : ScriptableObject {
     public string itemId;
     public string itemName;

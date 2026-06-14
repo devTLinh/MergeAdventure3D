@@ -48,6 +48,7 @@ public class OrderManager : MonoBehaviour {
                     Object.Destroy(item.gameObject);
                     NotificationUI.Instance.Show("Delivered!");
                     if (order.IsCompleted()) CompleteOrder(order);
+                    else AudioManager.Instance.PlaySfx(5);
                     return true;
                 }
             }
@@ -56,6 +57,7 @@ public class OrderManager : MonoBehaviour {
         return false;
     }
     void CompleteOrder(RuntimeOrder order) {
+        AudioManager.Instance.PlaySfx(6);
         ExplorationEnergyManager.Instance.CurrentEnergy += order.source.rewardEnergy;
         NotificationUI.Instance.Show("Order Complete! +" + order.source.rewardEnergy + " Energy");
         ActiveOrders.Remove(order);

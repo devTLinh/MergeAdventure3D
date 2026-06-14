@@ -16,6 +16,7 @@ public class Generator : MonoBehaviour, IHoverInfo{
         ItemData drop = data.drops[Random.Range(0, data.drops.Count)].item;
         ItemFactory.Instance.SpawnToSlot(slot, drop);
         NotificationUI.Instance.Show("Spawned " + drop.itemName);
+        AudioManager.Instance.PlaySfx(1);
         TutorialManager.Instance.Notify(TutorialStep.UseGenerator);
     }
     bool CanUse() {

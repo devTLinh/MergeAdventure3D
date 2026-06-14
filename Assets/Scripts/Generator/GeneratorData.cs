@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-[CreateAssetMenu(menuName = "Merge Frontier/Generator")]
+[CreateAssetMenu(menuName = "Merge Adventure/Generator")]
 public class GeneratorData : ScriptableObject {
     public string generatorId;
     public string displayName; 

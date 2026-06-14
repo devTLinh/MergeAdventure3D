@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-[CreateAssetMenu(menuName = "Merge Frontier/Order")] 
+[CreateAssetMenu(menuName = "Merge Adventure/Order")] 
 public class OrderData : ScriptableObject { 
     public string orderId; 
     public string customerName; 
