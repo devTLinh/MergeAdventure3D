@@ -1,6 +1,8 @@
 using UnityEngine;
 public class MergeManager : MonoBehaviour {
-    public static MergeManager Instance; 
+    public static MergeManager Instance;
+    [SerializeField]
+    GameObject mergeVfxPrefab;
     void Awake() {
         Instance = this;
     } 
@@ -13,6 +15,11 @@ public class MergeManager : MonoBehaviour {
         ItemData next = ItemDatabase.Instance.Get(a.Model.Data.mergeGroup, a.Model.Data.level + 1);
         Destroy(a.gameObject);
         Destroy(b.gameObject);
+        Instantiate(
+    mergeVfxPrefab,
+    slot.transform.position +
+    Vector3.up * 0.5f,
+    Quaternion.identity);
         ItemFactory.Instance.SpawnToSlot(slot, next);
         TutorialManager.Instance.Notify(TutorialStep.MergeItems);
         return true;

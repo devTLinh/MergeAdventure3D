@@ -9,6 +9,7 @@ public class ItemFactory : MonoBehaviour {
         ItemView view = obj.GetComponent<ItemView>();
         view.Init(new ItemModel(data)); 
         slot.SetItem(view);
+        view.gameObject.AddComponent<MergePopEffect>();
         return view;
     }
 }
