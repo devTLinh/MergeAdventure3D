@@ -1908,16 +1908,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4388706015582397040, guid: 666b587d4d952344aad3ba9fd0327632, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1229780357}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 666b587d4d952344aad3ba9fd0327632, type: 3}
---- !u!1 &187460159 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4388706015582397040, guid: 666b587d4d952344aad3ba9fd0327632, type: 3}
-  m_PrefabInstance: {fileID: 187460158}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &188776900
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3472,6 +3464,7 @@ Transform:
   - {fileID: 1592004514}
   - {fileID: 1055873087}
   - {fileID: 196372371}
+  - {fileID: 1555011081}
   m_Father: {fileID: 1813546588}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &322900411
@@ -9558,18 +9551,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6026326186303650809, guid: 666b587d4d952344aad3ba9fd0327632, type: 3}
   m_PrefabInstance: {fileID: 187460158}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1229780357
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 187460159}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b4d4c3c90d56a7458138a418aa8befd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1247905754
 GameObject:
   m_ObjectHideFlags: 0
@@ -10811,6 +10792,7 @@ MonoBehaviour:
   player: {fileID: 164562450}
   currentMapSpawn: {x: 0, y: 0, z: 0}
   currentMap: 
+  oldMap: 
 --- !u!1 &1542421305
 GameObject:
   m_ObjectHideFlags: 0
@@ -10904,6 +10886,50 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ab985927fe8ddcd419cceeea189cc673, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1555011080
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1555011081}
+  - component: {fileID: 1555011082}
+  m_Layer: 0
+  m_Name: TreasureChest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1555011081
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1555011080}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 300716156}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1555011082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1555011080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3969a6fcd0725274d9de0a656809d658, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1555738074

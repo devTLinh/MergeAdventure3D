@@ -8,6 +8,7 @@ public class SceneLoader : MonoBehaviour{
     [SerializeField] Transform player;
     public Vector3 currentMapSpawn;
     public string currentMap;
+    public string oldMap;
     void Awake()
     {
         if (Instance != null && Instance != this){
@@ -24,8 +25,12 @@ public class SceneLoader : MonoBehaviour{
         CoreGameplayController.Instance.HideCore();
         yield return SceneManager.LoadSceneAsync(currentMap, LoadSceneMode.Additive);
         yield return null;
-        if(currentMapSpawn == Vector3.zero){
+        Debug.Log("Scene loaded: " + currentMapSpawn);
+        if (currentMapSpawn == Vector3.zero){
             MapSpawn spawn = FindObjectOfType<MapSpawn>();
+            Debug.Log(
+    "Found Spawn = "
+    + spawn.gameObject.scene.name);
             currentMapSpawn = spawn.transform.position;
             StartCoroutine(TeleportPlayerRoutine(spawn));
         }
@@ -64,6 +69,7 @@ public class SceneLoader : MonoBehaviour{
     {
         currentMap = data.currentScene;
         currentMapSpawn = new Vector3(data.mapSpawnX, data.mapSpawnY, data.mapSpawnZ);
+        Debug.Log("Loading...");
     }
     public void ReturnToCore(){
         if (string.IsNullOrEmpty(currentMap)) return;
@@ -73,7 +79,11 @@ public class SceneLoader : MonoBehaviour{
     }
     IEnumerator ReturnRoutine()
     {
-        yield return SceneManager.UnloadSceneAsync(currentMap);
+        if (!string.IsNullOrEmpty(oldMap)){
+            yield return SceneManager.UnloadSceneAsync(oldMap);
+            oldMap = null;
+        }
+        else yield return SceneManager.UnloadSceneAsync(currentMap);
         yield return null;
         CoreGameplayController.Instance.ShowCore();
         MapSpawn spawn = FindObjectOfType<MapSpawn>();

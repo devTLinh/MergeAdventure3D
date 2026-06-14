@@ -1,8 +1,10 @@
 using UnityEngine;
 public class RegionTransitionSystem : MonoBehaviour { 
     public static void OpenGate() {
-        SceneLoader.Instance.ReturnToCore();
+        
         NotificationUI.Instance.Show("Next Region Opened");
+        SceneLoader.Instance.oldMap = SceneLoader.Instance.currentMap;
+        SceneLoader.Instance.currentMapSpawn = Vector3.zero;
         switch (SceneLoader.Instance.currentMap)
         {
             case "ForestCamp":
@@ -15,5 +17,6 @@ public class RegionTransitionSystem : MonoBehaviour {
                 SceneLoader.Instance.currentMap = "LostCivilization";
                 break;
         }
+        SceneLoader.Instance.ReturnToCore();
     }
 }

@@ -237,6 +237,8 @@ public class SaveManager : MonoBehaviour
         if (currentData.currentScene != SceneLoader.Instance.currentMap){
             currentData.nodes = new List<NodeSaveData>();
             nodeLookup.Clear();
+            SaveStateScene(currentData);
+            return;
         }
         ExplorationNode[] nodes = FindObjectsOfType<ExplorationNode>();
         foreach (ExplorationNode node in nodes){
@@ -258,10 +260,14 @@ public class SaveManager : MonoBehaviour
     }
     public void LoadNodesForScene(string sceneName){
         if (currentData == null || currentData.currentScene != sceneName) return;
+        {
+            LoadSceneState(currentData);
+        }
         ExplorationNode[] nodes = FindObjectsOfType<ExplorationNode>();
         foreach ( ExplorationNode node in nodes){
             if (nodeLookup.TryGetValue(node.nodeId, out bool unlocked) && unlocked){
-                node.Unlock();
+                node.unlocked = true;
+                node.Refresh();
             }
         }
         Debug.Log("Node restore " + sceneName);

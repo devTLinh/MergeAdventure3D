@@ -13,16 +13,19 @@ public static class RewardResolver {
                 NotificationUI.Instance.Show("+3 Explore"); 
                 break;
             case NodeRewardType.Treasure:
-                TreasureSpawner.Spawn(node.transform.position);
+                TreasureChest.Instance.Open();
+                NotificationUI.Instance.Show("Chest Opened!");
                 break;
             case NodeRewardType.Generator:
                 GeneratorUnlockSystem.UnlockAt(node.transform.position);
+                NotificationUI.Instance.Show("New generator Unlocked!");
                 break;
             case NodeRewardType.RareItem:
                 NotificationUI.Instance.Show("Rare Artifact");
                 break;
             case NodeRewardType.RegionGate: 
                 RegionTransitionSystem.OpenGate();
+                NotificationUI.Instance.Show("Region Gate Opened!");
                 break;
         }
     }

@@ -9,7 +9,5 @@ public class ExplorationNodeManager : MonoBehaviour {
         if (!node.CanUnlock()) return;
         ExplorationEnergyManager.Instance.Spend(node.unlockCost);
         node.Unlock();
-        NotificationUI.Instance.Show("Unlocked Area");
-
     } 
 }
