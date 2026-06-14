@@ -86,6 +86,7 @@ public class SceneLoader : MonoBehaviour{
         else yield return SceneManager.UnloadSceneAsync(currentMap);
         yield return null;
         CoreGameplayController.Instance.ShowCore();
+        GeneratorUnlockSystem.Instance.RefreshGenerators();
         MapSpawn spawn = FindObjectOfType<MapSpawn>();
         yield return StartCoroutine(TeleportPlayerRoutine(spawn));
     }

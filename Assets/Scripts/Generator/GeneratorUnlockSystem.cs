@@ -1,13 +1,49 @@
+using System.Collections.Generic;
 using UnityEngine;
-public class GeneratorUnlockSystem : MonoBehaviour {
+
+public class GeneratorUnlockSystem :
+MonoBehaviour
+{
     public static GeneratorUnlockSystem Instance;
-    [SerializeField] private Generator generatorPrefab;
-    private void Awake() { 
+
+    [SerializeField] List<GameObject> generators = new();
+
+    public int unlockedCount;
+
+    void Awake()
+    {
         Instance = this;
     }
-    public static void UnlockAt(Vector3 pos) {
-        if (Instance.generatorPrefab == null) return;
-        Instantiate(Instance.generatorPrefab, pos + Vector3.up * 0.5f, Quaternion.identity);
-        NotificationUI.Instance.Show("New Generator");
+
+    void Start()
+    {
+        RefreshGenerators();
+    }
+
+    public void UnlockNext()
+    {
+        if (unlockedCount >=
+            generators.Count)
+            return;
+        unlockedCount++;
+        Debug.Log(
+            "Generator Unlocked");
+    }
+
+    public void RefreshGenerators()
+    {
+        for (int i = 0; i < generators.Count; i++){
+            generators[i].SetActive( i < unlockedCount);
+        }
+    }
+    public void Restore(int count)
+    {
+        if(count == 0)
+        {
+            Debug.Log( "Invalid generator count in save data");
+            unlockedCount = 1;
+        }
+        else unlockedCount = count;
+        RefreshGenerators();
     }
 }

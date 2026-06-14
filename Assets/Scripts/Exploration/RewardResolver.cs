@@ -14,10 +14,10 @@ public static class RewardResolver {
                 break;
             case NodeRewardType.Treasure:
                 TreasureChest.Instance.Open();
-                NotificationUI.Instance.Show("Chest Opened!");
+                //NotificationUI.Instance.Show("Chest Opened!");
                 break;
             case NodeRewardType.Generator:
-                GeneratorUnlockSystem.UnlockAt(node.transform.position);
+                GeneratorUnlockSystem.Instance.UnlockNext();
                 NotificationUI.Instance.Show("New generator Unlocked!");
                 break;
             case NodeRewardType.RareItem:

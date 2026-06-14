@@ -60,8 +60,8 @@ public class ExplorationNode : MonoBehaviour
                 fog.FadeOut();
             }
         }
-        RewardResolver.Resolve(this);
         SceneLoader.Instance.currentMapSpawn = transform.position;
+        RewardResolver.Resolve(this);
         TutorialManager.Instance.Notify(TutorialStep.UnlockNode);
         //SaveManager.Instance.SaveGame();
         Refresh();

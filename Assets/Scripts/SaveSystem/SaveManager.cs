@@ -67,6 +67,8 @@ public class SaveManager : MonoBehaviour
         EnergyRegenManager.Instance.StartRealtimeTimers();
         //Tutorial
         TutorialManager.Instance.LoadStep(TutorialStep.UseGenerator);
+        GeneratorUnlockSystem.Instance.unlockedCount = 1;
+        SaveGame();
         Debug.Log("NEW GAME");
     }
     bool HasLocalSave()
@@ -98,6 +100,7 @@ public class SaveManager : MonoBehaviour
             }
         }
         SaveTutorial(data);
+        data.unlockedGenerators = GeneratorUnlockSystem.Instance.unlockedCount;
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(savePath,json);
         currentData = data;
@@ -144,6 +147,7 @@ public class SaveManager : MonoBehaviour
         LoadOrders(data);
         LoadTutorial(data);
         EnergyRegenManager.Instance.ApplyOfflineRegen(data);
+        GeneratorUnlockSystem.Instance.Restore(data.unlockedGenerators);
         Debug.Log( "GAME LOADED");
     }
     void SavePlayer( GameSaveData data){
@@ -218,7 +222,7 @@ public class SaveManager : MonoBehaviour
     }
     void LoadSceneState(GameSaveData data){
         if (string.IsNullOrEmpty(data.currentScene)){
-            SceneLoader.Instance .currentMap = "ForestCamp";
+            SceneLoader.Instance.currentMap = "ForestCamp";
             return;
         }
         SceneLoader.Instance.RestoreMapState(data);
@@ -234,10 +238,10 @@ public class SaveManager : MonoBehaviour
         if (currentData == null){
             currentData = new GameSaveData();
         }
+        SaveStateScene(currentData);
         if (currentData.currentScene != SceneLoader.Instance.currentMap){
             currentData.nodes = new List<NodeSaveData>();
             nodeLookup.Clear();
-            SaveStateScene(currentData);
             return;
         }
         ExplorationNode[] nodes = FindObjectsOfType<ExplorationNode>();
@@ -259,9 +263,10 @@ public class SaveManager : MonoBehaviour
         Debug.Log("Nodes Saved");
     }
     public void LoadNodesForScene(string sceneName){
-        if (currentData == null || currentData.currentScene != sceneName) return;
+        if (currentData == null || currentData.currentScene != sceneName) 
         {
             LoadSceneState(currentData);
+            return;
         }
         ExplorationNode[] nodes = FindObjectsOfType<ExplorationNode>();
         foreach ( ExplorationNode node in nodes){

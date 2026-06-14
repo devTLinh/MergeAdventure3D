@@ -16,6 +16,8 @@ public class GameSaveData
     public float mapSpawnZ;
     // BOARD
     public List<ItemSaveData> boardItems = new List<ItemSaveData>();
+    //GENERATOR
+    public int unlockedGenerators;
     // NODE
     public List<NodeSaveData> nodes = new List<NodeSaveData>();
     // ORDER
