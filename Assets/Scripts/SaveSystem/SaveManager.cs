@@ -242,11 +242,13 @@ public class SaveManager : MonoBehaviour
         if (currentData.currentScene != SceneLoader.Instance.currentMap){
             currentData.nodes = new List<NodeSaveData>();
             nodeLookup.Clear();
+            SaveStateScene(currentData);
             return;
         }
+        SaveStateScene(currentData);
         ExplorationNode[] nodes = FindObjectsOfType<ExplorationNode>();
         foreach (ExplorationNode node in nodes){
-            nodeLookup[node.nodeId] = node.unlocked;
+            if (node.unlocked) nodeLookup[node.nodeId] = node.unlocked;
         }
         if (currentData.nodes == null)
         {

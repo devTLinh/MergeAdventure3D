@@ -61,7 +61,7 @@ public class SceneLoader : MonoBehaviour{
         yield return new WaitForEndOfFrame();
         player.position = spawn.transform.position;
         player.rotation = spawn.transform.rotation;
-        SaveManager.Instance.LoadNodesForScene(currentMap);
+        //SaveManager.Instance.LoadNodesForScene(currentMap);
         Physics.SyncTransforms();
         yield return null;
         if (cc != null) cc.enabled = true;
